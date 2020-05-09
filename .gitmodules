@@ -1,3 +1,21 @@
 [submodule "zsh/.zshrc.d/oh-my-zsh"]
 	path = zsh/.zshrc.d/oh-my-zsh
 	url = git@github.com:ohmyzsh/ohmyzsh.git
+[submodule "tmux/.tmux/plugins/tmux-sessionist"]
+	path = tmux/.tmux/plugins/tmux-sessionist
+	url = https://git::@github.com/tmux-plugins/tmux-sessionist
+[submodule "tmux/.tmux/plugins/tpm"]
+	path = tmux/.tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm
+[submodule "tmux/.tmux/plugins/tmux-pain-control"]
+	path = tmux/.tmux/plugins/tmux-pain-control
+	url = https://git::@github.com/tmux-plugins/tmux-pain-control
+[submodule "tmux/.tmux/plugins/tmux-current-pane-hostname"]
+	path = tmux/.tmux/plugins/tmux-current-pane-hostname
+	url = https://git::@github.com/soyuka/tmux-current-pane-hostname
+[submodule "tmux/.tmux/plugins/tmux-sensible"]
+	path = tmux/.tmux/plugins/tmux-sensible
+	url = https://git::@github.com/tmux-plugins/tmux-sensible
+[submodule "tmux/.tmux/plugins/tmux-copycat"]
+	path = tmux/.tmux/plugins/tmux-copycat
+	url = https://git::@github.com/tmux-plugins/tmux-copycat
