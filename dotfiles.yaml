@@ -1,0 +1,4 @@
+files:
+  zsh:
+    zsh/.zshrc: ~/.zshrc
+    zsh/.zshrc.d: ~/.zshrc.d
