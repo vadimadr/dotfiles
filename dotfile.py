@@ -5,6 +5,8 @@ from copy import deepcopy
 from pathlib import Path
 from pprint import pprint
 import warnings
+import subprocess
+import shlex
 
 import click
 import yaml
@@ -65,7 +67,7 @@ def add(files, group, to, copy_mode):
         assert file_path.exists()
         local_path = copy_tree(file_path, dest_dir, mode=copy_mode, only_newer=True)
         local_path = local_path.relative_to(Path.cwd()).as_posix()
-
+        detect_submodules(Path(local_path).resolve())
         config_group[local_path] = serialize_path(file_path)
 
 
@@ -193,6 +195,27 @@ def serialize_path(path: Path):
     if path_str.startswith(home_str):
         return "~" + path_str[len(home_str) :]
     return path_str
+
+def run_command(cmd):
+    cmd = shlex.split(cmd)
+    with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
+        output, err = proc.communicate()
+        code = proc.wait()
+    return code, output.decode(), err
+
+def detect_submodules(path: Path):
+    curdir = Path.cwd()
+    for folder in path.rglob(".git"):
+        folder = folder.parent
+        os.chdir(folder.as_posix())
+        code, url, _ = run_command("git remote get-url origin")
+        if code:
+            continue
+        print(f"Detected submodule at {folder}")
+        os.chdir(curdir.as_posix())
+        relative_folder = folder.relative_to(curdir)
+        run_command(f"git submodule add {url} {relative_folder}")
+    os.chdir(curdir.as_posix())
 
 
 if __name__ == "__main__":
