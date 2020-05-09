@@ -2,6 +2,10 @@ files:
   tmux:
     tmux/.tmux: ~/.tmux
     tmux/.tmux.conf: ~/.tmux.conf
+  vim:
+    vim/.ideavimrc: ~/.ideavimrc
+    vim/.vim: ~/.vim
+    vim/.vimrc: ~/.vimrc
   zsh:
     zsh/.zshrc: ~/.zshrc
     zsh/.zshrc.d: ~/.zshrc.d

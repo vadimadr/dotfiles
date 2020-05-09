@@ -19,3 +19,45 @@
 [submodule "tmux/.tmux/plugins/tmux-copycat"]
 	path = tmux/.tmux/plugins/tmux-copycat
 	url = https://git::@github.com/tmux-plugins/tmux-copycat
+[submodule "vim/.vim/plugged/auto-pairs"]
+	path = vim/.vim/plugged/auto-pairs
+	url = https://github.com/jiangmiao/auto-pairs.git
+[submodule "vim/.vim/plugged/youcompleteme"]
+	path = vim/.vim/plugged/youcompleteme
+	url = https://github.com/valloric/youcompleteme.git
+[submodule "vim/.vim/plugged/vim-sensible"]
+	path = vim/.vim/plugged/vim-sensible
+	url = https://github.com/tpope/vim-sensible.git
+[submodule "vim/.vim/plugged/syntastic"]
+	path = vim/.vim/plugged/syntastic
+	url = https://github.com/scrooloose/syntastic.git
+[submodule "vim/.vim/plugged/vim-fugitive"]
+	path = vim/.vim/plugged/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
+[submodule "vim/.vim/plugged/nerdtree"]
+	path = vim/.vim/plugged/nerdtree
+	url = https://github.com/scrooloose/nerdtree.git
+[submodule "vim/.vim/plugged/L9"]
+	path = vim/.vim/plugged/L9
+	url = https://github.com/vim-scripts/L9.git
+[submodule "vim/.vim/plugged/FuzzyFinder"]
+	path = vim/.vim/plugged/FuzzyFinder
+	url = https://github.com/vim-scripts/FuzzyFinder.git
+[submodule "vim/.vim/plugged/vim-easymotion"]
+	path = vim/.vim/plugged/vim-easymotion
+	url = https://github.com/lokaltog/vim-easymotion.git
+[submodule "vim/.vim/plugged/vim-surround"]
+	path = vim/.vim/plugged/vim-surround
+	url = https://github.com/tpope/vim-surround.git
+[submodule "vim/.vim/plugged/sparkup"]
+	path = vim/.vim/plugged/sparkup
+	url = https://github.com/rstacruz/sparkup.git
+[submodule "vim/.vim/plugged/rails.vim"]
+	path = vim/.vim/plugged/rails.vim
+	url = https://github.com/vim-scripts/rails.vim.git
+[submodule "vim/.vim/plugged/vim-autoclose"]
+	path = vim/.vim/plugged/vim-autoclose
+	url = https://github.com/Townk/vim-autoclose.git
+[submodule "vim/.vim/plugged/ctrlp.vim"]
+	path = vim/.vim/plugged/ctrlp.vim
+	url = https://github.com/ctrlpvim/ctrlp.vim.git
