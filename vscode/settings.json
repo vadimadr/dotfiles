@@ -1,0 +1,13 @@
+{
+    "window.zoomLevel": 0,
+    "python.pythonPath": "/home/vadim/.virtualenvs/py36/bin/python3",
+    "terminal.integrated.env.linux": {
+        "NO_TMUX": "1"
+    },
+    "window.title": "${dirty}${rootName}${separator}${activeEditorShort}${separator}${appName}",
+    "window.titleBarStyle": "custom",
+    "python.linting.mypyCategorySeverity.error": "Warning",
+    "python.linting.pylintCategorySeverity.error": "Warning",
+    "python.linting.pycodestyleArgs": ["--ignore=E203", "--max-line-length=88"],
+    "python.formatting.provider": "black"
+}

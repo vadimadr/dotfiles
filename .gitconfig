@@ -1,0 +1,43 @@
+[user]
+	name = Vadim Andronov
+	email = vadimadr@gmail.com
+[alias]
+	co = checkout
+	c = commit
+	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+	lc = log --name-status -1
+	st = status -s
+	s = status -s
+	br = branch
+	b = branch
+	r = reset
+	r1 = reset HEAD^
+	rr = reset HEAD^
+	rh = reset HEAD^
+	r2 = reset HEAD^^
+	diff = diff --word-diff
+	tree = log --graph --decorate --pretty=oneline --abbrev-commit
+	dlc = diff --cached HEAD^
+	unstage = rm --cached -r
+	amend = commit --amend
+	show-status = show --name-status
+	tr = log --graph --decorate --pretty=oneline --abbrev-commit
+	l5 = log --graph --decorate --pretty=oneline --abbrev-commit HEAD~5..HEAD --
+	l10 = log --graph --decorate --pretty=oneline --abbrev-commit HEAD~10..HEAD --
+	ss = show --name-status
+[core]
+	editor = vim
+	autocrlf = input
+	pager = less -FRSX
+[merge]
+	tool = meld
+[diff]
+	tool = meld
+[difftool]
+	prompt = false
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

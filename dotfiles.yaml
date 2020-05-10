@@ -1,4 +1,10 @@
 files:
+  .gitconfig: ~/.gitconfig
+  ranger:
+    ranger/commands.py: ~/.config/ranger/commands.py
+    ranger/rc.conf: ~/.config/ranger/rc.conf
+    ranger/rifle.conf: ~/.config/ranger/rifle.conf
+    ranger/scope.sh: ~/.config/ranger/scope.sh
   tmux:
     tmux/.tmux: ~/.tmux
     tmux/.tmux.conf: ~/.tmux.conf
@@ -6,6 +12,10 @@ files:
     vim/.ideavimrc: ~/.ideavimrc
     vim/.vim: ~/.vim
     vim/.vimrc: ~/.vimrc
+  vscode:
+    vscode/keybindings.json: ~/.config/Code/User/keybindings.json
+    vscode/settings.json: ~/.config/Code/User/settings.json
+    vscode/snippets: ~/.config/Code/User/snippets
   zsh:
     zsh/.zshrc: ~/.zshrc
     zsh/.zshrc.d: ~/.zshrc.d
