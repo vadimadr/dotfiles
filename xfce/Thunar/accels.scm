@@ -69,6 +69,7 @@
 ; (gtk_accel_path "<Actions>/ThunarWindow/open-trash" "")
 ; (gtk_accel_path "<Actions>/ThunarBookmarks/c9867a8b5613d18f271538106d9ec8c0" "")
 ; (gtk_accel_path "<Actions>/ThunarStandardView/properties" "<Alt>Return")
+; (gtk_accel_path "<Actions>/ThunarLocationButtons/location-buttons-down-folder" "<Alt>Down")
 ; (gtk_accel_path "<Actions>/ThunarStandardView/delete" "")
 ; (gtk_accel_path "<Actions>/ThunarWindow/empty-trash" "")
 ; (gtk_accel_path "<Actions>/ThunarBookmarks/5cb5255d989a453e95ba5b28a1f0afa4" "")
