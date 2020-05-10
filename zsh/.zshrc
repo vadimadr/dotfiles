@@ -175,6 +175,8 @@ done
 
 BASE16_SHELL=$HOME/.config/base16-shell/
 
+EDITOR=vim
+
 ## init oh-my-zsh
 export ZSH=$HOME/oh-my-zsh
 ZSH_THEME="fishy" # prompt style

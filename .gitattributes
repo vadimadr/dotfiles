@@ -1,1 +1,1 @@
-ide_configs/pycharm_keymap.jar filter=lfs diff=lfs merge=lfs -text
+ide_configs/*.jar filter=lfs diff=lfs merge=lfs -text

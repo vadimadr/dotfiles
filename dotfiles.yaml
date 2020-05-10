@@ -1,5 +1,8 @@
 files:
   .gitconfig: ~/.gitconfig
+  jupyter:
+    jupyter/ipython_config.py: ~/.ipython/profile_default/ipython_config.py
+    jupyter/ipython_kernel_config.py: ~/.ipython/profile_default/ipython_kernel_config.py
   ranger:
     ranger/commands.py: ~/.config/ranger/commands.py
     ranger/rc.conf: ~/.config/ranger/rc.conf
@@ -16,6 +19,10 @@ files:
     vscode/keybindings.json: ~/.config/Code/User/keybindings.json
     vscode/settings.json: ~/.config/Code/User/settings.json
     vscode/snippets: ~/.config/Code/User/snippets
+  xfce:
+    xfce/Thunar/accels.scm: ~/.config/Thunar/accels.scm
+    xfce/Thunar/uca.xml: ~/.config/Thunar/uca.xml
+    xfce/accels.scm: ~/.config/xfce4/terminal/accels.scm
   zsh:
     zsh/.zshrc: ~/.zshrc
     zsh/.zshrc.d: ~/.zshrc.d
