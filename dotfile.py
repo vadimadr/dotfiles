@@ -105,13 +105,19 @@ def sync(group, copy_mode):
     type=click.Choice(("hard", "soft", "copy", "none")),
     default="none",
 )
-def deploy(group, copy_mode):
+@click.option("-f", "--force", is_flag=True)
+def deploy(group, copy_mode, force):
     config_group = get_config_group(group)
 
     if copy_mode == "none":
         warnings.warn(
             "You must set copy mode explicitly (--copy-mode hard), by default only displaying output"
         )
+
+    if force:
+        only_newer = False
+    else:
+        only_newer = False
 
     def _deploy_group(group):
         for local, deploy in group.items():
@@ -120,7 +126,11 @@ def deploy(group, copy_mode):
             else:
                 deploy_path = Path(deploy).expanduser().resolve()
                 copy_tree(
-                    Path(local), deploy_path.parent, deploy_path.name, mode=copy_mode
+                    Path(local),
+                    deploy_path.parent,
+                    deploy_path.name,
+                    mode=copy_mode,
+                    only_newer=only_newer,
                 )
 
     _deploy_group(config_group)
@@ -172,6 +182,8 @@ def copy_file(src: Path, dst: Path, mode="hard", only_newer=True):
         print(f"Copying {src} -> {dst} mode={mode}")
 
     if mode == "hard":
+        if os.path.exists(str(dst)):
+            os.remove(str(dst))
         os.link(str(src), str(dst))
     elif mode == "soft":
         os.symlink(str(src), str(dst))
@@ -196,12 +208,14 @@ def serialize_path(path: Path):
         return "~" + path_str[len(home_str) :]
     return path_str
 
+
 def run_command(cmd):
     cmd = shlex.split(cmd)
     with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
         output, err = proc.communicate()
         code = proc.wait()
     return code, output.decode(), err
+
 
 def detect_submodules(path: Path):
     curdir = Path.cwd()
