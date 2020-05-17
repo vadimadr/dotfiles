@@ -9,5 +9,8 @@
     "python.linting.mypyCategorySeverity.error": "Warning",
     "python.linting.pylintCategorySeverity.error": "Warning",
     "python.linting.pycodestyleArgs": ["--ignore=E203", "--max-line-length=88"],
-    "python.formatting.provider": "black"
+    "python.formatting.provider": "black",
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "python.jediEnabled": false
 }
