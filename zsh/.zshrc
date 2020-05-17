@@ -1,208 +1,132 @@
- if [[ ! $TERM =~ screen && -z "$NO_TMUX" ]]; then
-     exec tmux
- fi
+# Start tmux
+if [[ ! $TERM =~ screen && -z "$NO_TMUX" ]]; then
+    exec tmux
+fi
 
-# Set up the prompt
+# directory where additional config files are stored
+ZSHRCD=$HOME/.zshrc.d
 
-# autoload -Uz promptinit
-# promptinit
-# prompt adam1
-autoload -U colors && colors
+# default editor
+EDITOR=vim
+VEDITOR=code
 
-setopt histignorealldups sharehistory
+# Setup zsh history
+HISTSIZE=500000
+SAVEHIST=$HISTSIZE
+HISTFILE=~/.zsh_history
+# remove blanks from history 
+setopt histreduceblanks
+# do not save dublicates in history
+setopt histignorealldups
+# share history between terminals
+setopt sharehistory
+# Automatically use menu completion after the second consecutive request for completion
+setopt automenu
 
 # Use emacs keybindings even if our EDITOR is set to vi
 bindkey -e
-
-# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
-HISTSIZE=30000
-SAVEHIST=30000
-HISTFILE=~/.zsh_history
-
-# completion modules
-zmodload -a zsh/stat stat                
-zmodload -a zsh/zpty zpty               
-zmodload -a zsh/zprof zprof              
-zmodload -ap zsh/mapfile mapfile   
-setopt histignorealldups sharehistory
 
 # prevent zsh to print an error when no match can be found (allows to type commands w/o "")
+# allows to run commands without escaping glob symbols
 unsetopt nomatch
-
-# Use emacs keybindings even if our EDITOR is set to vi
-bindkey -e
+setopt no_nomatch 
 
 # do not try to correct all arguments in line
 unsetopt correct_all
 
-zstyle ':completion:*' auto-description 'specify: %d'
-zstyle ':completion:*' completer _expand _complete _correct _approximate
-zstyle ':completion:*' format 'Completing %d'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' menu select=2
-eval "$(dircolors -b)"
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' list-colors ''
-zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
-zstyle ':completion:*' menu select=long
-zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-zstyle ':completion:*' use-compctl false
-zstyle ':completion:*' verbose true
-zstyle ':completion:*:*:kill:*' menu yes select
-zstyle ':completion:*:kill:*' force-list always
-zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=$color[cyan]=$color[red]"
-zstyle ':completion:*:*:kill:*:processes' command 'ps --forest -A -o pid,user,cmd'
-zstyle ':completion:*:processes-names' command 'ps axho command' 
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*::::' completer _expand _complete _correct _ignored _approximate
-zstyle -e ':completion:*:approximate:*' max-errors 'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )'
-zstyle ':completion:*:expand:*' tag-order all-expansions
-zstyle ':completion:*' verbose yes
-zstyle ':completion:*:options' description 'yes'
-zstyle ':completion:*:options' auto-description '%d'
-zstyle ':completion:*:descriptions' format '> %B%d%b'
-zstyle ':completion:*:messages' format '> %d'
-zstyle ':completion:*:warnings' format '> Ошибка: нет совпадений для: %d'
-zstyle ':completion:*:corrections' format '> %B%d (число ошибок: %e)%b'
-zstyle ':completion:*:correct:*' insert-unambiguous true
-zstyle ':completion:*:correct:*' original true
-zstyle ':completion:*:correct:*' prompt 'исправить на:'
-zstyle ':completion:*' prompt 'Исправить (число ошибок: %e) > '
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' 'r:|[._-]=** r:|=**' 'l:|=* r:|=*'
-zstyle ':completion:*' match-original both
-zstyle ':completion:*:matches' group 'yes'
-zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
-zstyle ':completion:*:*:(^rm):*:*files' ignored-patterns '*?.o' '*?.c~''*?.old' '*?.pro'
-zstyle ':completion:*:rm:*' ignore-line yes
-zstyle ':completion:*:functions' ignored-patterns '_*'
-zstyle ':completion:*:incremental:*' completer _complete _correct
-zstyle ':completion:*:predict:*' completer _complete
-zstyle ':mime:*' x-browsers firefox rekonq google-chrome konqueror chromium-browser
-zstyle ':mime:*' tty-browsers w3m elinks links lynx
-zstyle -e ':completion:*' hosts 'reply=($myhosts)'
-zstyle ':completion:*' insert-tab true
-zstyle ':completion:*' select-prompt '%SСтрока: %LЭлемент: %M[%p]%s'
-zstyle ':completion:*' list-prompt '%SТекущее положение: %p%s'
-zstyle ':completion:*' sort true
-zstyle ':completion:*' file-sort name
-zstyle ':completion:*' keep-prefix changed
-zstyle ':completion:*:man:*' separate-sections true
-zstyle ':completion:*:history-words' stop yes
-zstyle ':completion:*:history-words' remove-all-dups yes
-zstyle ':completion:*:history-words' list false
-zstyle ':completion:*:history-words' menu yes select
-zstyle ':completion:*' old-menu true
-zstyle ':completion:*' original true
-zstyle ':completion:*' substitute 1
-zstyle ':completion:*' use-compctl true
-zstyle ':completion:*' word true
-zstyle ':completion:*' special-dirs true
-zstyle ':completion:*' squeeze-slashes true
-zstyle ':completion:*:(ssh|scp|ftp):*' hosts $hosts
-zstyle ':completion:*:(ssh|scp|ftp):*' users $users
-zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~'
-zstyle ':completion:*:*:*:users' ignored-patterns adm apache bin daemon games gdm halt ident junkbust lp mail mailnull named news nfsnobody nobody nscd ntp operator pcap postgres radvd rpc rpcuser rpm shutdown squid sshd sync uucp vcsa xfs
-
-
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
-zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
-
-# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
-HISTSIZE=1000
-SAVEHIST=1000
-HISTFILE=~/.zsh_history
-
-# Use modern completion system
-autoload -Uz compinit
-compinit
-
-zstyle ':completion:*' auto-description 'specify: %d'
-zstyle ':completion:*' completer _expand _complete _correct _approximate
-zstyle ':completion:*' format 'Completing %d'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' menu select=2
-eval "$(dircolors -b)"
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' list-colors ''
-zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
-zstyle ':completion:*' menu select=long
-zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-zstyle ':completion:*' use-compctl false
-zstyle ':completion:*' verbose true
-
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
-zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+# Substitute ~ in cli args
+setopt magic_equal_subst
 
 # handle <C-S> in vim
 stty -ixon
 
-# load plugins
-for plugin in ~/.zshrc.d/plugins/*.zsh; do
-  if [[ -r $plugin ]]; then
-    source $plugin
-  else
-    print "can not load plugin $plugin"
-  fi
-done
+eval "$(dircolors -b)"
 
-for dir in ~/.zshrc.d/plugins/*; do
+# Setup default browsers
+zstyle ':mime:*' x-browsers google-chrome firefox rekonq konqueror chromium-browser
+zstyle ':mime:*' tty-browsers w3m elinks links lynx
 
-  if [[ -f $dir ]]; then
-    continue
-  fi
+# Use antigen plugin manager
+# It uses caching to speed up initialization
+# To install run: 
+# curl -L git.io/antigen > $ZSHRCD/antigen.zsh
+source $ZSHRCD/antigen.zsh
 
-  dirname=${dir:t}
+# Enable logging to debug errors, if any:
+# ANTIGEN_LOG=$HOME/.zshrc.d/antigen.log
 
-  for pluginfile in $dir/$dirname.{plugin.zsh,zsh}; do
-    if [[ -r $pluginfile ]]; then
-      source $pluginfile
-      continue 2
-    fi
-  done
+# Load some modules from prezto framework
+antigen use prezto
+# Auto fix typos in commands
+# Suggest package to install missing commands
+antigen bundle command-not-found
+# Some good default setting and aliases
+antigen bundle utility
+# Git related aliases
+antigen bundle git
+# Tmux aliases
+ZSH_TMUX_AUTOSTART=false
+ZSH_TMUX_AUTOCONNECT=false
+antigen bundle tmux
 
-  print "can not load plugin from '$dir'" >&2
-done
+# needed for pure theme
+antigen bundle mafredri/zsh-async
+# suggest while you type
+antigen bundle zsh-users/zsh-autosuggestions
+# additional completions
+antigen bundle zsh-users/zsh-completions
+# Color differentiation in shell!
+antigen bundle zdharma/fast-syntax-highlighting
+# antigen bundle zsh-users/zsh-syntax-highlighting
 
-# load other configs 
-for file in ~/.zshrc.d/*; do
-  if [[ -r $file && "$file" !=  *.old ]]; then
-    source $file
-  fi
-done
 
-BASE16_SHELL=$HOME/.config/base16-shell/
+# Minimalistic theme (prompt) with a lot of useful information:
+PURE_PROMPT_SYMBOL="$"
+# Threshold after which execution time will be displayed for executed command
+PURE_CMD_MAX_EXEC_TIME=0.5
+antigen theme https://github.com/sindresorhus/pure 
 
-EDITOR=vim
+# Another great prompt theme
+# SPACESHIP_EXIT_CODE_SHOW=true
+# antigen theme https://github.com/denysdovhan/spaceship-zsh-theme spaceship
 
-## init oh-my-zsh
-export ZSH=$HOME/oh-my-zsh
-ZSH_THEME="fishy" # prompt style
-DISABLE_AUTO_UPDATE="true" 
-plugins=(git z dircycle zsh-completions)
-source $ZSH/oh-my-zsh.sh
+# Type part of the command and navigate with up / down arrows
+antigen bundle zsh-users/zsh-history-substring-search
 
-autoload -Uz compinit
-compinit
+antigen apply
 
-. ~/oh-my-zsh/plugins/z/z.sh 
-setopt magic_equal_subst
+# Some completion settings
+source $ZSHRCD/zstyles.zsh
+# My custom aliases & snippets
+# Load after antigen setup to overwrite plugin aliases
+source $ZSHRCD/aliases.zsh
+# My custom shortcuts
+source $ZSHRCD/bindkeys.zsh
+source $ZSHRCD/colors.zsh
 
-export WORKON_HOME=$HOME/.virtualenvs
-export VIRTUALENVWRAPPER_SCRIPT=$HOME/.local/bin/virtualenvwrapper.sh
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-export VIRTUALENVWRAPPER_VIRTUALENV=$HOME/.local/bin/virtualenv
+
+# Setup virtualenv wrapper
+WORKON_HOME=$HOME/.virtualenvs
+VIRTUALENVWRAPPER_SCRIPT=$HOME/.local/bin/virtualenvwrapper.sh
+VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+VIRTUALENVWRAPPER_VIRTUALENV=$HOME/.local/bin/virtualenv
 source $HOME/.local/bin/virtualenvwrapper_lazy.sh
 
-export CUDA_HOME=/usr/local/cuda
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/cuda/lib64"
+# Init default virtual env
+# Do not execute python scripts at zsh init! Init env manually
+DEFAULT_VIRTUAL_ENV=py36
+PATH="$WORKON_HOME/$DEFAULT_VIRTUAL_ENV/bin:$PATH"
+VIRTUALENVWRAPPER_PROJECT_FILENAME=.project
+VIRTUALENVWRAPPER_WORKON_CD=1
+VIRTUALENVWRAPPER_HOOK_DIR=/home/vadim/.virtualenvs
+VIRTUAL_ENV=/home/vadim/.virtualenvs/py36
 
+CUDA_HOME=/usr/local/cuda
+LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/cuda/lib64"
 
-export NVM_DIR="/home/vadim/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# Setup node version manager
+# export NVM_DIR="/home/vadim/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
+# Enable fuzzy finder
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-workon py36
-eval $(thefuck --alias)
