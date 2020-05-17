@@ -89,27 +89,26 @@ alias xx=aunpack
  }
 
  gotmp() {
- # tmpname=$(python -c 'import random,sys; sys.stdout.write(hex(random.getrandbits(64))[2:-1]+"\n")' 2>/dev/null)
+  # tmpname=$(python -c 'import random,sys; sys.stdout.write(hex(random.getrandbits(64))[2:-1]+"\n")' 2>/dev/null)
 
+  if [[ -n $1 && -n $(ls /tmp | grep "workdir-.*$1") ]]; then
+      for wd in /tmp/workdir-*$1; do
+      if [[ -d $wd ]]; then
+        echo "Going to: $wd"
+        cd $wd
+        return
+      fi
+      done 
+  fi
 
- if [[ -n $1 && -n $(ls /tmp | grep "workdir-.*$1") ]]; then
-    for wd in /tmp/workdir-*$1; do
-     if [[ -d $wd ]]; then
-       echo "Going to: $wd"
-       cd $wd
-       return
-     fi
-    done 
- fi
-
- tmpname=$(date +'%m%d-%H%M')
- # dlist=$(find /tmp -type d -name "workdfir-${tmpname}*" 2>/dev/null)
- if [[ -n $1 ]]; then
- 	tmpname="${tmpname}-$1"
- fi
- mkdir "/tmp/workdir-$tmpname"
- cd "/tmp/workdir-$tmpname"
- }
+  tmpname=$(date +'%m%d-%H%M')
+  # dlist=$(find /tmp -type d -name "workdfir-${tmpname}*" 2>/dev/null)
+  if [[ -n $1 ]]; then
+    tmpname="${tmpname}-$1"
+  fi
+  mkdir "/tmp/workdir-$tmpname"
+  cd "/tmp/workdir-$tmpname"
+}
 
 
 alias sudo="sudo "
@@ -122,7 +121,7 @@ function ubb() { make && ./ub $@ }
 function myip() { wget -O - -q http://icanhazip.com }
 alias -g DN="2>/dev/null"
 
-alias cpr='rsync -r --info=progress2 --human-readable --no-i-r -a'
+alias cpr='rsync --info=progress2 --human-readable --no-i-r -a'
 function mvr() { cpr --remove-source-files $1 $2 && rm -rf $1 }
 
 alias py=ipython
