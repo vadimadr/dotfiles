@@ -93,6 +93,7 @@ def sync(group, copy_mode):
                     Path(local).name,
                     mode=copy_mode,
                 )
+                detect_submodules(Path(local))
 
     _sync_group(config_group)
 
@@ -164,7 +165,7 @@ def copy_tree(
         for file in file_or_dir.iterdir():
             copy_tree(file, destination_path, **copy_args)
     else:
-        raise FileNotFoundError
+        raise FileNotFoundError(f"path: {file_or_dir}")
     return destination_path
 
 
@@ -227,7 +228,7 @@ def detect_submodules(path: Path):
             continue
         print(f"Detected submodule at {folder}")
         os.chdir(curdir.as_posix())
-        relative_folder = folder.relative_to(curdir)
+        relative_folder = folder.resolve().relative_to(curdir)
         run_command(f"git submodule add {url} {relative_folder}")
     os.chdir(curdir.as_posix())
 
