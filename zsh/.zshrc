@@ -23,6 +23,11 @@ setopt sharehistory
 # Automatically use menu completion after the second consecutive request for completion
 setopt automenu
 
+# auto push directories to dir stack while cding
+setopt auto_pushd
+setopt pushd_ignore_dups
+setopt pushdminus
+
 # Use emacs keybindings even if our EDITOR is set to vi
 bindkey -e
 
@@ -30,6 +35,9 @@ bindkey -e
 # allows to run commands without escaping glob symbols
 unsetopt nomatch
 setopt no_nomatch 
+
+# auto suggest to correct typoed commands
+setopt correct
 
 # do not try to correct all arguments in line
 unsetopt correct_all
@@ -49,36 +57,42 @@ zstyle ':mime:*' tty-browsers w3m elinks links lynx
 # Use antigen plugin manager
 # It uses caching to speed up initialization
 # To install run: 
-# curl -L git.io/antigen > $ZSHRCD/antigen.zsh
-source $ZSHRCD/antigen.zsh
+# curl -L git.io/antigen > $ZSHRCD/antigen/antigen.zsh
+ANTIGEN_BUNDLES=$ZSHRCD/antigen-bundles
+source $ZSHRCD/antigen/antigen.zsh
 
 # Enable logging to debug errors, if any:
-# ANTIGEN_LOG=$HOME/.zshrc.d/antigen.log
+# ANTIGEN_LOG=$ZSHRCD/antigen.log
+# ANTIGEN_DEBUG_LOG=$ZSHRCD/antigen_debug.log
 
-# Load some modules from prezto framework
-antigen use prezto
-# Auto fix typos in commands
+# Load oh-my-zsh framework
+antigen use oh-my-zsh
+
 # Suggest package to install missing commands
 antigen bundle command-not-found
-# Some good default setting and aliases
-antigen bundle utility
+# iterate through dir stack using keybinds (C-up/C-down)
+antigen bundle dircycle
 # Git related aliases
 antigen bundle git
 # Tmux aliases
 ZSH_TMUX_AUTOSTART=false
 ZSH_TMUX_AUTOCONNECT=false
 antigen bundle tmux
-
+# pip completions
+antigen bundle pip
+# allows to run google ... in terminal!
+antigen bundle web-search
 # needed for pure theme
 antigen bundle mafredri/zsh-async
 # suggest while you type
+ZSH_AUTOSUGGEST_STRATEGY=(completion history)
+ZSH_AUTOSUGGEST_USE_ASYNC=true
 antigen bundle zsh-users/zsh-autosuggestions
 # additional completions
 antigen bundle zsh-users/zsh-completions
 # Color differentiation in shell!
 antigen bundle zdharma/fast-syntax-highlighting
 # antigen bundle zsh-users/zsh-syntax-highlighting
-
 
 # Minimalistic theme (prompt) with a lot of useful information:
 PURE_PROMPT_SYMBOL="$"
