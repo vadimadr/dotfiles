@@ -85,7 +85,7 @@ antigen bundle web-search
 # needed for pure theme
 antigen bundle mafredri/zsh-async
 # suggest while you type
-ZSH_AUTOSUGGEST_STRATEGY=(completion history)
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_USE_ASYNC=true
 antigen bundle zsh-users/zsh-autosuggestions
 # additional completions

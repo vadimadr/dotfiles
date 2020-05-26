@@ -151,6 +151,8 @@ function ff() {
   find -name "*$1*"
 }
 
+alias xa="xargs -I {}"
+
 function copy_path() {
   path_=`realpath $1`
   echo $path_ | xclip
