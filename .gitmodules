@@ -85,3 +85,6 @@
 [submodule "zsh/.zshrc.d/antigen"]
 	path = zsh/.zshrc.d/antigen
 	url = https://github.com/zsh-users/antigen.git
+[submodule "tmux/.tmux/plugins/tmux-better-mouse-mode"]
+	path = tmux/.tmux/plugins/tmux-better-mouse-mode
+	url = https://git::@github.com/nhdaly/tmux-better-mouse-mode
