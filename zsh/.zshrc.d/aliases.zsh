@@ -196,6 +196,7 @@ function _patch_path_var() {
 alias py_path='_patch_path_var PYTHONPATH'
 alias lib_path='_patch_path_var LD_LIBRARY_PATH'
 alias exe_path='_patch_path_var PATH'
+function ssht() {ssh -X $1 -t "tmux new"}
 
 fuck () {
     TF_PYTHONIOENCODING=$PYTHONIOENCODING;
