@@ -8,6 +8,9 @@ files:
     ranger/rc.conf: ~/.config/ranger/rc.conf
     ranger/rifle.conf: ~/.config/ranger/rifle.conf
     ranger/scope.sh: ~/.config/ranger/scope.sh
+  scripts:
+    scripts/focus_term.sh: /usr/local/bin/focus_term.sh
+    scripts/focus_window.py: /usr/local/bin/focus_window.py
   tmux:
     tmux/.tmux: ~/.tmux
     tmux/.tmux.conf: ~/.tmux.conf
