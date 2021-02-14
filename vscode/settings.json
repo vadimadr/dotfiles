@@ -14,5 +14,6 @@
     "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
     "python.jediEnabled": false,
     "tabnine.experimentalAutoImports": true,
-    "python.languageServer": "Microsoft"
+    "python.languageServer": "Pylance",
+    "git.enableSmartCommit": true
 }
