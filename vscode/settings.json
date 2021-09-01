@@ -15,5 +15,20 @@
     "python.jediEnabled": false,
     "tabnine.experimentalAutoImports": true,
     "python.languageServer": "Pylance",
-    "git.enableSmartCommit": true
+    "git.enableSmartCommit": true,
+    "jupyter.jupyterServerType": "remote",
+    "jupyter.askForKernelRestart": false,
+    "jupyter.alwaysTrustNotebooks": true,
+    "files.autoSave": "afterDelay",
+    "jupyter.interactiveWindowMode": "perFile",
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "workbench.editorAssociations": [
+        {
+            "viewType": "jupyter.notebook.ipynb",
+            "filenamePattern": "*.ipynb"
+        }
+    ],
+    "cmake.configureOnOpen": false,
+    "bookmarks.sideBar.expanded": true
 }
