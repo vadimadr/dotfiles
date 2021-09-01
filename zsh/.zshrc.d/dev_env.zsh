@@ -1,25 +1,30 @@
 # Setup virtualenv wrapper
-# WORKON_HOME=$HOME/.virtualenvs
-# VIRTUALENVWRAPPER_SCRIPT=$HOME/.local/bin/virtualenvwrapper.sh
-# VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-# VIRTUALENVWRAPPER_VIRTUALENV=$HOME/.local/bin/virtualenv
-# source $HOME/.local/bin/virtualenvwrapper_lazy.sh
+if [[ -f $HOME/.local/bin/virtualenvwrapper.sh ]]; then
+    WORKON_HOME=$HOME/.virtualenvs
+    VIRTUALENVWRAPPER_SCRIPT=$HOME/.local/bin/virtualenvwrapper.sh
+    VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+    VIRTUALENVWRAPPER_VIRTUALENV=$HOME/.local/bin/virtualenv
+    source  $HOME/.local/bin/virtualenvwrapper_lazy.sh
 
-# Init default virtual env
-# Do not execute python scripts at zsh init! Init env manually
-# DEFAULT_VIRTUAL_ENV=py36
-# PATH="$WORKON_HOME/$DEFAULT_VIRTUAL_ENV/bin:$PATH"
-# VIRTUALENVWRAPPER_PROJECT_FILENAME=.project
-# VIRTUALENVWRAPPER_WORKON_CD=1
-# VIRTUALENVWRAPPER_HOOK_DIR=/home/vadim/.virtualenvs
-# VIRTUAL_ENV=/home/vadim/.virtualenvs/py36
+    # Init default virtual env
+    # Do not execute python scripts at zsh init! Init env manually
+    # Shell prompt will be corupeted otherwise
+    DEFAULT_VIRTUAL_ENV=py36
+    PATH="$WORKON_HOME/$DEFAULT_VIRTUAL_ENV/bin:$PATH"
+    VIRTUALENVWRAPPER_PROJECT_FILENAME=.project
+    VIRTUALENVWRAPPER_WORKON_CD=1
+    VIRTUALENVWRAPPER_HOOK_DIR=/home/vadim/.virtualenvs
+    VIRTUAL_ENV=/home/vadim/.virtualenvs/py36
+fi
 
-# CUDA_HOME=/usr/local/cuda
-# LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/cuda/lib64"
+
+# Setup CUDA
+CUDA_HOME=/usr/local/cuda
+[[ -d  $CUDA_HOME ]] && LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${CUDA_HOME}/lib64"
 
 # Setup node version manager
-# export NVM_DIR="/home/vadim/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh"  # This loads nvm
 
 # Enable fuzzy finder
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -49,4 +54,4 @@ if [[ -d  "$HOME/.pyenv/bin" ]]; then
     export PATH="$PYENV_ROOT/bin:$PATH"
 fi
 
-which pyenv && eval "$(pyenv init --path)"
+[ -f $(which pyenv) ] && eval "$(pyenv init --path)"
