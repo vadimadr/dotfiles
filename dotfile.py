@@ -1,22 +1,34 @@
 #!/usr/bin/env python3
+from asyncio import run
 import os
 import shutil
 from copy import deepcopy
 from pathlib import Path
-from pprint import pprint
 import warnings
 import subprocess
 import shlex
 
 import click
 import yaml
+import logging
+
+LOGGING_FORMAT = "%(asctime)s %(name)s [%(levelname)s]: %(message)s"
+
+try:
+    import coloredlogs
+    coloredlogs.install(level="INFO", fmt=LOGGING_FORMAT)
+except ImportError:
+    logging.basicConfig(level=logging.INFO, format=LOGGING_FORMAT)
+
+logger = logging.getLogger("dotfiles")
+
 
 config = None
 prev_config = None
 verbose = 0
 
 DEFAULT_CONFIG = "dotfiles.yaml"
-DEFAULY_COPY_MODE = "hard"
+DEFAULT_COPY_MODE = "hard"
 
 
 @click.group()
@@ -50,12 +62,13 @@ def main(config_path, verbose_):
     "-m",
     "--copy-mode",
     type=click.Choice(("hard", "soft", "copy", "none")),
-    default=DEFAULY_COPY_MODE,
+    default=DEFAULT_COPY_MODE,
 )
 @main.command("add")
 def add(files, group, to, copy_mode):
     """Copy new file and update config"""
     config_group = get_config_group(group)
+    assert config_group is not None
 
     dest_dir = Path.cwd()
     if to is not None:
@@ -66,9 +79,10 @@ def add(files, group, to, copy_mode):
         file_path = Path(file)
         assert file_path.exists()
         local_path = copy_tree(file_path, dest_dir, mode=copy_mode, only_newer=True)
-        local_path = local_path.relative_to(Path.cwd()).as_posix()
-        detect_submodules(Path(local_path).resolve())
-        config_group[local_path] = serialize_path(file_path)
+        if local_path is not None:
+            local_path = local_path.relative_to(Path.cwd()).as_posix()
+            detect_submodules(Path(local_path).resolve())
+            config_group[local_path] = serialize_path(file_path)
 
 
 @main.command("sync")
@@ -77,7 +91,7 @@ def add(files, group, to, copy_mode):
     "-m",
     "--copy-mode",
     type=click.Choice(("hard", "soft", "copy", "none")),
-    default=DEFAULY_COPY_MODE,
+    default=DEFAULT_COPY_MODE,
 )
 def sync(group, copy_mode):
     config_group = get_config_group(group)
@@ -96,6 +110,34 @@ def sync(group, copy_mode):
                 detect_submodules(Path(local))
 
     _sync_group(config_group)
+
+@main.command("status", help="Check whether deployed files are up-to-date")
+@click.option("-g", "--group", type=str)
+@click.option(
+    "-m",
+    "--copy-mode",
+    type=click.Choice(("hard", "soft", "copy", "none")),
+    default=DEFAULT_COPY_MODE,
+)
+def status(group, copy_mode):
+    config_group = get_config_group(group)
+    ok = True
+
+    def _status_group(group):
+        nonlocal ok
+        for local, deploy in group.items():
+            if isinstance(deploy, dict):
+                _status_group(deploy)
+            else:
+                local_path = Path(local)
+                deploy_path = Path(deploy).expanduser().resolve()
+                ok &= status_tree(local_path, deploy_path.parent, deploy_path, copy_mode)
+
+    _status_group(config_group)
+    if ok:
+        logger.info("All files are identical")
+    else:
+        logger.warning("Some changes detected")
 
 
 @main.command("deploy")
@@ -116,7 +158,7 @@ def deploy(group, copy_mode, force):
         )
 
     if force:
-        only_newer = False
+        only_newer = True
     else:
         only_newer = False
 
@@ -137,19 +179,84 @@ def deploy(group, copy_mode, force):
     _deploy_group(config_group)
 
 
-@main.resultcallback()
+@main.result_callback()
 def finalize(*args, **kwargs):
     config_path = kwargs["config_path"]
 
     if verbose > 0:
-        print("Current config: ")
-        pprint(config)
+        logger.info("Current config: ")
+        logger.info(config)
 
     if prev_config != config:
         with open(config_path, "w") as f:
             yaml.dump(config, f)
             # json.dump(config, f, sort_keys=True, indent=4)
 
+
+def status_tree(local_path: Path, deploy_dir, deploy_file: Path, mode="hard"):
+    status = True
+    if not deploy_file.exists():
+        logger.warning(f"File {local_path} does not exists at {deploy_dir}")
+        return False
+
+    if local_path.is_dir():
+        if not deploy_file.is_dir():
+            logger.warning(f"Deployed file {deploy_file} is not a directory.")
+            return False
+        
+        local_files = list(local_path.iterdir())
+        deployed_files = list(deploy_file.iterdir())
+
+        local_names = set([p.name for p in local_files])
+        deploy_names = set([p.name for p in deployed_files])
+        if local_names != deploy_names:
+            logger.warning(f"Directories {local_path} and {deploy_file} are not the same!")
+            l_diff = local_names.difference(deploy_names)
+            r_diff = deploy_names.difference(local_names)
+            if len(l_diff) > 0:
+                diff_names = ", ".join(list(l_diff)[:5])
+                if len(l_diff) > 5:
+                    diff_names = diff_names + "..."
+                logger.warning(f"Directory {deploy_file} missing {len(l_diff)} more files: {diff_names}")
+            if len(r_diff) > 0:
+                diff_names = ", ".join(list(r_diff)[:5])
+                if len(r_diff) > 5:
+                    diff_names = diff_names + "..."
+                logger.warning(f"Directory {deploy_file} have {len(r_diff)} not added files: {diff_names}")
+            status = False
+
+        # Step into subdirectories
+        for name in local_names & deploy_names:
+            status &= status_tree(local_path / name, deploy_file, deploy_file / name)
+        return status
+
+    # Both files are plain files or symlinks
+    if deploy_file.is_dir():
+        logger.warning(f"File {local_path} is plain file but {deploy_file} is a directory ")
+        return False
+    # both local and deployed are plain files
+    if local_path.samefile(deploy_file):
+        # identical files
+        logger.debug(f"Same files {local_path} {deploy_file}")
+        return True
+    
+    if mode in ("hard", "copy") and deploy_file.is_symlink():
+        logger.warning(f"File {deploy_file} is a symlink, but mode={mode}")
+        return False
+    elif mode == "soft" and not  deploy_file.is_symlink():
+        logger.warning(f"File {deploy_file} is not symlink.")
+        return False
+
+    if mode == "hard":
+        logger.warning(f"Files {local_path} and {deploy_file} are not the same.")
+    elif mode == "copy" and not files_are_same(local_path, deploy_file):
+        logger.warning(f"Files {local_path} and {deploy_file} differ")
+    elif mode == "soft" and deploy_file.readlink().resolve() != local_path.resolve():
+        logger.warning(f"Link {deploy_file} points to a different file ({deploy_file.readlink()})")
+    else:
+        return True
+    return False
+        
 
 def copy_tree(
     file_or_dir: Path, destination_dir: Path, destination_file: Path = None, **copy_args
@@ -176,20 +283,26 @@ def copy_file(src: Path, dst: Path, mode="hard", only_newer=True):
         dst_time = dst.stat().st_ctime
         if dst_time >= src_time:
             if verbose:
-                print(f"Skipping {dst} -> {src} (not older)")
+                logger.info(f"Skipping {dst} -> {src} (not older)")
             return
 
+        if dst.is_dir():
+            logger.error(f"File {dir} is a directory, but {src} is a plain file. Can not replace it")
+            raise IsADirectoryError(f"Can not replace {dst} with {src}")
+
     if verbose:
-        print(f"Copying {src} -> {dst} mode={mode}")
+        logger.info(f"Copying {src} -> {dst} mode={mode}")
+
+    if dst.is_file():
+        logger.info(f"File {dst} already exists, but {src} is newer! Replacing it")
+        dst.unlink()
 
     if mode == "hard":
-        if os.path.exists(str(dst)):
-            os.remove(str(dst))
-        os.link(str(src), str(dst))
+        os.link(src, dst)
     elif mode == "soft":
-        os.symlink(str(src), str(dst))
+        os.symlink(src, dst)
     elif mode == "copy":
-        shutil.copy2(str(src), str(dst))
+        shutil.copy2(src, dst)
 
 
 def get_config_group(group):
@@ -198,6 +311,9 @@ def get_config_group(group):
         config_group = config_file_list.setdefault(group, {})
     else:
         config_group = config_file_list
+    if config_group is None:
+        # Empty dict keys in PyYAML are None by default 
+        return {}
     return config_group
 
 
@@ -226,11 +342,24 @@ def detect_submodules(path: Path):
         code, url, _ = run_command("git remote get-url origin")
         if code:
             continue
-        print(f"Detected submodule at {folder}")
+        logger.info(f"Detected submodule at {folder}")
         os.chdir(curdir.as_posix())
         relative_folder = folder.resolve().relative_to(curdir)
         run_command(f"git submodule add {url} {relative_folder}")
     os.chdir(curdir.as_posix())
+
+def files_are_same(src: Path, dst:Path):
+    if src.stat().st_size != dst.stat().st_size:
+        return False
+    code1, out1, _ = run_command(f"md5sum {src}") 
+    code2, out2, _ = run_command(f"md5sum {dst}") 
+    if code1 != 0 or code2 != 0:
+        raise RuntimeError("md5sun returned non zero exit code.")
+    if out1.split()[0] != out2.split()[0]:
+        return False
+    return True
+    
+
 
 
 if __name__ == "__main__":
