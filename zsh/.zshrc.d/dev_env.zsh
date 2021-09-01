@@ -25,7 +25,6 @@
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 
@@ -43,3 +42,11 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
+# Python PyENV
+if [[ -f  "$HOME/.pyenv/bin" ]]; then 
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+fi
+
+which pyenv && eval "$(pyenv init --path)"
