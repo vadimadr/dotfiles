@@ -50,7 +50,11 @@ setopt magic_equal_subst
 # handle <C-S> in vim
 stty -ixon
 
-eval "$(gdircolors -b)"
+if [[ ! $OSTYPE =~ darwin ]]; then
+    eval "$(dircolors -b)"
+else;
+    eval "$(gdircolors -b)"
+fi
 
 # Setup default browsers
 zstyle ':mime:*' x-browsers google-chrome firefox rekonq konqueror chromium-browser

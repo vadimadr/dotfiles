@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from asyncio import run
 import os
 import shutil
 from copy import deepcopy

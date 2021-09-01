@@ -202,7 +202,7 @@ alias stat=/usr/bin/stat
 
 alias sd='s systemctl'
 alias dcmp='docker-compose'
-alias r="source $(which ranger)"
+alias r='source $(which ranger)'
 alias wo=workon
 
 function _patch_path_var() {
