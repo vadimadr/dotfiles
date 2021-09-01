@@ -16,14 +16,21 @@ eval "$(fasd --init posix-alias zsh-hook zsh-ccomp zsh-ccomp-install zsh-wcomp z
 alias mkdir='mkdir -pv'
 alias grep="grep --color=auto"
 alias g="git"
-alias go="git checkout"
 
 alias ss=subl
 alias v=vim
 
-alias xc=xclip
 
-alias ls="ls --color=auto"
+# OS specific aliases 
+if [[ ! $OSTYPE =~ darwin ]]; then
+  alias ls="ls --color=auto"
+  alias xc=xclip
+  alias cpr="rsync --info=progress2 --no-i-r --human-readable -a"
+else
+  alias cpr='rsync --progress --human-readable -a'
+  alias xc=pbcopy
+fi
+
 alias ll="ls -lhv --group-directories-first"
 alias l=ll
 alias dl="ll -d */"
@@ -54,6 +61,30 @@ alias apts='apt-cache search'
 alias aptf='apt-file search'
 alias aptu='sudo apt update'
 alias aptup='sudo apt upgrade'
+
+# Brew aliases
+alias bri="brew install"
+alias brp="brew --prefix"
+alias brs="brew search"
+
+# Conda aliases
+alias coi="conda install"
+alias cos="conda search"
+alias coa="conda activate"
+
+# Docker aliases
+alias dk="docker"
+alias dkrmf="docker rm -f"
+alias dkr="docker run --rm -it"
+alias dke="docker exec -it"
+alias dkrd="docker run -d -it"  # Start daemon
+alias dkrcwd="docker run --rm -it -v $(pwd):$(pwd) -w $(pwd)"  # run docker with current direcory as volume
+
+# pip aliases
+alias pipi="pip install"
+alias pipu="pip uninstall"
+alias pipr=pipu
+alias pipir="pip install -r requirements.txt"
 
 function aptp() { sudo add-apt-repository "$@" && sudo apt-get update;}
 
@@ -115,13 +146,10 @@ alias sudo="sudo "
 alias s="sudo "
 alias sd="sudo "
 
-alias gpp="g++-5 -std=c++14"
-alias gcc="gcc-5"
 function ubb() { make && ./ub $@ }
 function myip() { wget -O - -q http://icanhazip.com }
 alias -g DN="2>/dev/null"
 
-alias cpr='rsync --info=progress2 --human-readable --no-i-r -a'
 function mvr() { cpr --remove-source-files $1 $2 && rm -rf $1 }
 
 alias py=ipython
@@ -131,7 +159,6 @@ alias ipyex='xclip -selection c -o > /tmp/jupyter_connection_info.json; ipython 
 
 alias pdb="python3 -m ipdb"
 
-function venv() {. `find ! -path '*/.tox/*' -a -wholename '*/bin/activate'`}
 
 alias pl="perl -lan"
 alias pp="pl -E "
@@ -175,7 +202,7 @@ alias stat=/usr/bin/stat
 
 alias sd='s systemctl'
 alias dcmp='docker-compose'
-alias r='source /home/vadim/.virtualenvs/py36/bin/ranger'
+alias r="source $(which ranger)"
 alias wo=workon
 
 function _patch_path_var() {
