@@ -52,6 +52,10 @@ Plug 'scrooloose/syntastic'
 " install instructions: https://github.com/Valloric/YouCompleteMe#installation
 Plug 'valloric/youcompleteme'
 
+Plug 'easymotion/vim-easymotion'
+
+Plug 'haya14busa/incsearch.vim'
+
 call plug#end()
 
 runtime! plugin/sensible.vim
@@ -73,3 +77,23 @@ nmap <C-w> :q<cr>
 noremap  <silent> <C-s> :update<CR>
 noremap <Space> @q
 noremap Q @q
+
+
+let g:EasyMotion_do_mapping = 0 " Disable default eqsymotion mappings"
+" s{char}{char} to move to {char}{char}
+
+nmap s <Plug>(easymotion-overwin-f2)
+
+" Replace "Default" search with vim-easymotion
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+
+" These `n` & `N` mappings are options. You do not have to map `n` & `N` to
+" EasyMotion.
+" Without these mappings, `n` & `N` works fine. (These mappings just provide
+" different highlight method and have some other features )
+map  n <Plug>(easymotion-next)
+map  N <Plug>(easymotion-prev)
+
+" Case-Insensitive search in easy-motion
+let g:EasyMotion_smartcase = 1
