@@ -30,6 +30,14 @@ NVM_DIR="$HOME/.nvm"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
+# Python PyENV
+if [[ -d  "$HOME/.pyenv/bin" ]]; then 
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+fi
+
+[ -f $(which pyenv) ] && eval "$(pyenv init --path)"
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 
@@ -48,10 +56,3 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-# Python PyENV
-if [[ -d  "$HOME/.pyenv/bin" ]]; then 
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
-fi
-
-[ -f $(which pyenv) ] && eval "$(pyenv init --path)"
