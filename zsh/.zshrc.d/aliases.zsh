@@ -50,6 +50,11 @@ alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 
+# venv cds
+function get_sitepackages() {python -c 'import site; print(site.getsitepackages()[0])'}
+alias cdvenv="cd $(dirname $(which python))/.."
+alias cdsitepackages="cd $(get_sitepackages)"
+
 # show directory stack
 alias cdd="dirs -v" 
 alias cd-="dirs -v"
