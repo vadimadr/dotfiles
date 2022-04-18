@@ -27,7 +27,12 @@ if [[ ! $OSTYPE =~ darwin ]]; then
   alias xc=xclip
   alias cpr="rsync --info=progress2 --no-i-r --human-readable -a"
 else
-  alias cpr='rsync --progress --human-readable -a'
+  if [[ -x /opt/homebrew/bin/rsync ]]; then
+    alias rsync="/opt/homebrew/bin/rsync"
+    alias cpr="rsync --info=progress2 --no-i-r --human-readable -a"
+  else
+    alias cpr="rsync --progress --human-readable -a"
+  fi
   alias xc=pbcopy
 fi
 
@@ -52,8 +57,8 @@ alias .....="cd ../../../.."
 
 # venv cds
 function get_sitepackages() {python -c 'import site; print(site.getsitepackages()[0])'}
-alias cdvenv="cd $(dirname $(which python))/.."
-alias cdsitepackages="cd $(get_sitepackages)"
+function cdvenv() {cd $(dirname $(which python))/..}
+function cdsitepackages() {cd $(get_sitepackages)}
 
 # show directory stack
 alias cdd="dirs -v" 

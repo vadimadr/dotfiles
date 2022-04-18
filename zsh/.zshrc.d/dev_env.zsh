@@ -31,17 +31,28 @@ NVM_DIR="$HOME/.nvm"
 
 
 # Python PyENV
-if [[ -d  "$HOME/.pyenv/bin" ]]; then 
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
-fi
+# if [[ -d  "$HOME/.pyenv/bin" ]]; then 
+#     export PYENV_ROOT="$HOME/.pyenv"
+#     export PATH="$PYENV_ROOT/bin:$PATH"
+# fi
 
-[ -f $(which pyenv) ] && eval "$(pyenv init --path)"
+# [ -f $(which pyenv) ] && eval "$(pyenv init --path)"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 
-CONDA_ROOT="$HOME/opt/conda_arm/"
+
+_conda_search_paths=(
+    "$HOME/opt/conda_arm"
+    "$HOME/anaconda3"
+)
+
+for _conda_path in ${_conda_search_paths[@]}; do
+    if [ -d ${_conda_path} ]; then
+        CONDA_ROOT=$_conda_path
+        break
+    fi
+done
 
 __conda_setup=$("$CONDA_ROOT/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)
 if [ $? -eq 0 ]; then

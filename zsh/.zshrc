@@ -56,6 +56,11 @@ else;
     eval "$(gdircolors -b)"
 fi
 
+# Add snap directory to PATH
+if [[ -d /snap/bin ]]; then
+    export PATH="${PATH}:/snap/bin"
+fi
+
 # Setup default browsers
 zstyle ':mime:*' x-browsers google-chrome firefox rekonq konqueror chromium-browser
 zstyle ':mime:*' tty-browsers w3m elinks links lynx
@@ -97,14 +102,18 @@ antigen bundle zsh-users/zsh-autosuggestions
 # additional completions
 antigen bundle zsh-users/zsh-completions
 # Color differentiation in shell!
-antigen bundle zdharma/fast-syntax-highlighting
+
+# Bug: Some commands can become very slow while typing! (e.g. man)
+# temporary solution: disalbe chromas for slow command (slow chromas can be detected via zprof) -- fixed in newer version
+# FAST_HIGHLIGHT[chroma-man]= disables chroma for man
+antigen bundle zdharma-continuum/fast-syntax-highlighting
 # antigen bundle zsh-users/zsh-syntax-highlighting
 
 # Minimalistic theme (prompt) with a lot of useful information:
-PURE_PROMPT_SYMBOL="$"
+# PURE_PROMPT_SYMBOL="$"
 # Threshold after which execution time will be displayed for executed command
-PURE_CMD_MAX_EXEC_TIME=0.5
-antigen theme https://github.com/sindresorhus/pure 
+# PURE_CMD_MAX_EXEC_TIME=0.5
+# antigen theme sindresorhus/pure@main
 
 # Another great prompt theme
 # SPACESHIP_EXIT_CODE_SHOW=true
@@ -112,8 +121,6 @@ antigen theme https://github.com/sindresorhus/pure
 
 # Type part of the command and navigate with up / down arrows
 antigen bundle zsh-users/zsh-history-substring-search
-
-antigen apply
 
 # Some completion settings
 source $ZSHRCD/zstyles.zsh
@@ -126,5 +133,11 @@ source $ZSHRCD/colors.zsh
 
 source $ZSHRCD/dev_env.zsh
 
+antigen apply
+
 # Enable fuzzy finder
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Use starship as prompt
+export STARSHIP_CONFIG="${ZSHRCD}/starship.toml"
+eval "$(starship init zsh)"
