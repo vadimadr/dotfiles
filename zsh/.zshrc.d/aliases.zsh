@@ -230,9 +230,28 @@ function _patch_path_var() {
   echo "${(P)_var_name}" | sed 's/:/\n/g'
 }
 
+function _rm_path_var() {
+  # Remove some path from $PATH/$PYTHONPATH/etc variables
+  _var_name=$1
+  _path_to_rm=$2
+
+  _old_val=${(P)_var_name}
+  # remove patH_to_rm
+  _new_val=${_old_val/$_path_to_rm/}
+  # clean variable
+  _new_val=$( echo $_new_val | sed -r -e 's/:+/:/g' -e 's/(^:)|(:$)//g' )
+
+  export $_var_name=$_new_val
+}
+
 alias py_path='_patch_path_var PYTHONPATH'
 alias lib_path='_patch_path_var LD_LIBRARY_PATH'
 alias exe_path='_patch_path_var PATH'
+
+alias rm_py_path='_rm_path_var PYTHONPATH'
+alias rm_lib_path='_rm_path_var LD_LIBRARY_PATH'
+alias rm_exe_path='_rm_path_var PATH'
+
 function ssht() {ssh -X $1 -t "tmux new"}
 
 fuck () {
