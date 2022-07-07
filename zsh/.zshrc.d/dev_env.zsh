@@ -9,12 +9,16 @@ if [[ -f $HOME/.local/bin/virtualenvwrapper.sh ]]; then
     # Init default virtual env
     # Do not execute python scripts at zsh init! Init env manually
     # Shell prompt will be corupeted otherwise
+
     DEFAULT_VIRTUAL_ENV=py36
-    PATH="$WORKON_HOME/$DEFAULT_VIRTUAL_ENV/bin:$PATH"
     VIRTUALENVWRAPPER_PROJECT_FILENAME=.project
     VIRTUALENVWRAPPER_WORKON_CD=1
-    VIRTUALENVWRAPPER_HOOK_DIR=/home/vadim/.virtualenvs
-    VIRTUAL_ENV=/home/vadim/.virtualenvs/py36
+    VIRTUALENVWRAPPER_HOOK_DIR=$HOME/.virtualenvs
+
+    # update: do not set VIRTUALENV by default to avoid conflicts with Conda
+    # activate only when needed
+    # PATH="$WORKON_HOME/$DEFAULT_VIRTUAL_ENV/bin:$PATH"
+    # VIRTUAL_ENV=$HOME/.virtualenvs/py36
 fi
 
 
@@ -38,9 +42,12 @@ NVM_DIR="$HOME/.nvm"
 
 # [ -f $(which pyenv) ] && eval "$(pyenv init --path)"
 
+
+# workaround to make conda appear first in PATH list 
+unset CONDA_SHLVL
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-
 
 _conda_search_paths=(
     "$HOME/opt/conda_arm"
