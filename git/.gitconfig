@@ -5,8 +5,8 @@
 	co = checkout
 	c = commit
 	cm = commit -m 
-	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
-	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+	sw = switch
+	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
 	lc = log --name-status -1
 	st = status -s
 	s = status -s
@@ -18,16 +18,25 @@
 	rh = reset HEAD^
 	r2 = reset HEAD^^
 	diff = diff --word-diff
-	tree = log --graph --decorate --pretty=oneline --abbrev-commit
-	dlc = diff --cached HEAD^
 	unstage = rm --cached -r
 	amend = commit --amend
-	show-status = show --name-status
-	tr = log --graph --decorate --pretty=oneline --abbrev-commit
-	l5 = log --graph --decorate --pretty=oneline --abbrev-commit HEAD~5..HEAD --
-	l10 = log --graph --decorate --pretty=oneline --abbrev-commit HEAD~10..HEAD --
-	ss = show --name-status
 	sub = submodule update --init --recursive
+	dlc = diff --cached HEAD^
+
+	show-status = show --name-status
+	ss = show-status
+	# logging 
+	graph = log --all --graph --decorate --pretty=oneline --abbrev-commit
+	tree = graph
+	gr = graph
+	tr = gr
+	g5 = graph HEAD~5..HEAD
+	g10 = graph HEAD~5..HEAD
+
+	ls = log --all --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+	ll = ls
+	l5 = ls HEAD~5..HEAD
+	l10 = ls HEAD~10..HEAD
 [core]
 	editor = vim
 	autocrlf = input
