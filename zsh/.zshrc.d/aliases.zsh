@@ -2,6 +2,7 @@
 alias bower='noglob bower'
 alias fc='noglob fc'
 alias find='noglob find'
+alias fd='noglob fd'
 alias ftp='noglob ftp'
 alias history='noglob history'
 alias locate='noglob locate'
@@ -41,7 +42,7 @@ alias l=ll
 alias dl="ll -d */"
 alias d=dl
 
-alias df="df -h | head -n1 && df -h | sed '1d' | sort -k1"
+alias dfh="df -h | head -n1 && df -h | sed '1d' | sort -k2 -h -r | grep -v /dev/loop"
 function ds() {echo "$(pwd) - $(du -sh 2>/dev/null | awk '{print $1}') used";} # diectory size
 
 alias pmem="ps -o pid,rss,pmem,args -e --sort -rss"

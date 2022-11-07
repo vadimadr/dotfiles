@@ -122,6 +122,9 @@ antigen bundle zdharma-continuum/fast-syntax-highlighting
 # Type part of the command and navigate with up / down arrows
 antigen bundle zsh-users/zsh-history-substring-search
 
+# Disable brew updates (takes ~20 minutes to update all packages recursively)
+export HOMEBREW_NO_AUTO_UPDATE=1
+
 # Some completion settings
 source $ZSHRCD/zstyles.zsh
 # My custom aliases & snippets

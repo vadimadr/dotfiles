@@ -6,6 +6,9 @@ style_user = 'green dimmed'
 symbol = "  "
 disabled = true
 
+[gcloud]
+disabled = true
+
 [conda]
 symbol = " "
 format = '[$symbol$environment]($style) '
@@ -84,4 +87,4 @@ symbol = " "
 symbol = "ﯣ "
 
 [cmake]
-disabled = true
+disabled = false
