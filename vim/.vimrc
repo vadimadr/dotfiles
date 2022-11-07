@@ -25,25 +25,36 @@
 let mapleader = ","
 call plug#begin()
 
+" adds cs"' to change surrounding quotes to double quotes
 Plug 'tpope/vim-surround'
 
 " overwrite default settings
 Plug 'tpope/vim-sensible'
 
 " autoclose brackets
-"Plug 'Townk/vim-autoclose'
 Plug 'jiangmiao/auto-pairs'
-" git manager
+"Plug 'Townk/vim-autoclose'
+
+" git manager. Adds :Gstatus, :Gcommit, etc. commands
 Plug 'tpope/vim-fugitive'
+
 " project manager
+" opens file sidebar ^N
 Plug 'scrooloose/nerdtree'
+
+" opens open file propmpt by ^P
 Plug 'ctrlpvim/ctrlp.vim'
+
 Plug 'lokaltog/vim-easymotion'
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 
-Plug 'L9'
-Plug 'FuzzyFinder'
-Plug 'rails.vim'
+" Utils library for other plugins
+" What packages depend on it ???
+" Plug 'L9'
+
+" fzf integration
+" adds :FZF command to open files
+Plug 'junegunn/fzf'
 
 " syntax checker
 Plug 'scrooloose/syntastic'
@@ -52,6 +63,7 @@ Plug 'scrooloose/syntastic'
 " install instructions: https://github.com/Valloric/YouCompleteMe#installation
 Plug 'valloric/youcompleteme'
 
+" Press s to enable 2 charactere easymotio
 Plug 'easymotion/vim-easymotion'
 
 Plug 'haya14busa/incsearch.vim'
@@ -85,8 +97,15 @@ let g:EasyMotion_do_mapping = 0 " Disable default eqsymotion mappings"
 nmap s <Plug>(easymotion-overwin-f2)
 
 " Replace "Default" search with vim-easymotion
-map  / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-tn)
+" Not conveinent to use, needs to press enter
+" map  / <Plug>(easymotion-sn)
+" omap / <Plug>(easymotion-tn)
+
+" Replace default search with vim-incsearch
+" Highlight all matches as you type
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
 
 " These `n` & `N` mappings are options. You do not have to map `n` & `N` to
 " EasyMotion.
