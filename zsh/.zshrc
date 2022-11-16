@@ -7,7 +7,7 @@ if [[ -d $HOME/local/bin ]]; then
 elif [[ -d $HOME/opt/local/bin ]]; then
     _local_bin_path=$HOME/opt/local/bin
 fi
-if [[ ! $PTAH =~ $_local_bin_path ]]; then
+if [[ -n $_local_bin_path && ! $PTAH =~ $_local_bin_path ]]; then
     export PATH="${_local_bin_path}:${PATH}"
 fi
 # add ~/local/lib or ~/opt/local/lib to LD_LIBRARY_PATH
@@ -16,16 +16,15 @@ if [[ -d $HOME/local/lib ]]; then
 elif [[ -d $HOME/opt/local/lib ]]; then
     _local_lib_path=$HOME/opt/local/lib
 fi
-if [[ $OSTYPE =~ linux ]]; then
-    if [[ ! $LD_LIBRARY_PATH =~ $_local_lib_path ]]; then
-        export LD_LIBRARY_PATH="${_local_lib_path}:${LD_LIBRARY_PATH}"
-    fi
+if [[ -n $_local_lib_path && ! $LD_LIBRARY_PATH =~ $_local_lib_path ]]; then
+    export LD_LIBRARY_PATH="${_local_lib_path}:${LD_LIBRARY_PATH}"
 fi
 
 # Start tmux
-if [[ ! $TERM =~ screen && -z "$NO_TMUX" ]]; then
-    exec tmux
-fi
+# Use oh-my-zsh/tmux instead! (solves [exited] issue)
+# if [[ ! $TERM =~ screen && -z "$NO_TMUX" ]]; then
+#     exec tmux
+# fi
 
 # directory where additional config files are stored
 ZSHRCD=$HOME/.zshrc.d
@@ -112,7 +111,7 @@ antigen bundle git
 # Tmux aliases
 ZSH_TMUX_AUTOSTART=false
 ZSH_TMUX_AUTOCONNECT=false
-antigen bundle tmux
+# antigen bundle tmux
 # pip completions
 antigen bundle pip
 # allows to run google ... in terminal!
