@@ -18,7 +18,11 @@
   },
   "For loop with obj": {
     "prefix": "fore",
-    "body": ["for (${auto}& ${2} : ${1}) {", "    ${0:/* code */}", "}"]
+    "body": [
+      "for (${auto}& ${2} : ${1}) {",
+      "    ${0:/* code */}",
+      "}"
+    ]
   },
   "try": {
     "prefix": "try",
@@ -34,33 +38,65 @@
   },
   "if": {
     "prefix": "if",
-    "body": ["if ($1) {", "    ${0:/* code */}", "}"],
+    "body": [
+      "if ($1) {",
+      "    ${0:/* code */}",
+      "}"
+    ],
     "description": "Code snippet for if statement"
   },
   "else if": {
-    "prefix": ["elif", "elseif"],
-    "body": ["else if ($1) {", "    ${0:/* code */}", "}"]
+    "prefix": [
+      "elif",
+      "elseif"
+    ],
+    "body": [
+      "else if ($1) {",
+      "    ${0:/* code */}",
+      "}"
+    ]
   },
   "while": {
     "prefix": "while",
-    "body": ["while ($1) {", "    ${0:/* code */}", "}"],
+    "body": [
+      "while ($1) {",
+      "    ${0:/* code */}",
+      "}"
+    ],
     "description": "Code snippet for if statement"
   },
   "do": {
     "prefix": "do",
-    "body": ["do {", "    ${0:/* code */}", "} while($1);"]
+    "body": [
+      "do {",
+      "    ${0:/* code */}",
+      "} while($1);"
+    ]
   },
   "namespace": {
-    "prefix": ["ns", "namespace"],
-    "body": ["namespace ${1:detail} {", "$0", "} // namespace ${1:detail}"]
+    "prefix": [
+      "ns",
+      "namespace"
+    ],
+    "body": [
+      "namespace ${1:detail} {",
+      "$0",
+      "} // namespace ${1:detail}"
+    ]
   },
   "ifdef": {
     "prefix": "ifdef",
-    "body": ["#ifdef ${1:NDEBUG}", "$0", "#endif // ${1:NDEBUG}"]
+    "body": [
+      "#ifdef ${1:NDEBUG}",
+      "$0",
+      "#endif // ${1:NDEBUG}"
+    ]
   },
   "return": {
     "prefix": "re",
-    "body": ["return $1;"],
+    "body": [
+      "return $1;"
+    ],
     "description": "Code snippet for if statement"
   },
   "main": {
@@ -75,26 +111,41 @@
   "Catch: TEST_CASE": {
     "prefix": "test",
     "description": "Catch3 test case snippet",
-    "body": ["TEST_CASE(\"$1\") {", "    $2", "}"]
+    "body": [
+      "TEST_CASE(\"$1\") {",
+      "    $2",
+      "}"
+    ]
   },
   "Catch: SECTION": {
     "prefix": "test_sec",
     "description": "Catch3 test case snippet",
-    "body": ["SECTION(\"$1\") {", "    $2", "}"]
+    "body": [
+      "SECTION(\"$1\") {",
+      "    $2",
+      "}"
+    ]
   },
   "Catch: REQUIRE": {
     "prefix": "req",
     "description": "Catch3 REQUIRE snippet",
-    "body": ["REQUIRE( $1 );"]
+    "body": [
+      "REQUIRE( $1 );"
+    ]
   },
-
   "include": {
-    "prefix": ["inc", "inc<"],
+    "prefix": [
+      "inc",
+      "inc<"
+    ],
     "body": "#include <$1>",
     "description": "Include header file"
   },
   "include_proj": {
-    "prefix": ["Inc", "inc\""],
+    "prefix": [
+      "Inc",
+      "inc\""
+    ],
     "body": "#include \"$1\"",
     "description": "Include header file"
   },
@@ -124,11 +175,20 @@
   },
   "Stream output": {
     "prefix": "cout",
-    "body": "cout << $1 << '\\n';"
+    "body": "std::cout << $1 << std::endl;"
+    // "body": "cout << $1 << '\\n';"
   },
   "Class": {
-    "prefix": ["class", "cls"],
-    "body": ["class ${1:MyClass} {", "  public:", "    $0", "};"]
+    "prefix": [
+      "class",
+      "cls"
+    ],
+    "body": [
+      "class ${1:MyClass} {",
+      "  public:",
+      "    $0",
+      "};"
+    ]
   },
   "Class Rule-3": {
     "prefix": "class3",
@@ -157,7 +217,10 @@
     ]
   },
   "Interface": {
-    "prefix": ["iface", "interface"],
+    "prefix": [
+      "iface",
+      "interface"
+    ],
     "body": [
       "class ${1:IMyInterface} {",
       "  public:",
@@ -171,20 +234,32 @@
     "body": "const $1&"
   },
   "string": {
-    "prefix": ["ss", "str"],
+    "prefix": [
+      "ss",
+      "str"
+    ],
     "body": "std::string"
   },
   "cstr": {
-    "prefix": ["cstr", "css"],
+    "prefix": [
+      "cstr",
+      "css"
+    ],
     "description": "const string&",
     "body": "const std::string& "
   },
   "int64": {
-    "prefix": ["i64", "ll"],
+    "prefix": [
+      "i64",
+      "ll"
+    ],
     "body": "int64_t"
   },
   "vector": {
-    "prefix": ["vec", "vv"],
+    "prefix": [
+      "vec",
+      "vv"
+    ],
     "body": "vector<$1> $2;"
   },
   "vector<long long>": {
@@ -197,11 +272,17 @@
   },
   // CP snippets
   "Begin End": {
-    "prefix": ["bege", "all"],
+    "prefix": [
+      "bege",
+      "all"
+    ],
     "body": "$1.begin(), $1.end()"
   },
   "Make Pair": {
-    "prefix": ["mkp", "mp"],
+    "prefix": [
+      "mkp",
+      "mp"
+    ],
     "body": "make_pair($0)"
   },
   "first": {
@@ -227,11 +308,17 @@
   // Read input
   "Read vector": {
     "prefix": "reve",
-    "body": ["vector<int> ${1:a};", "for (auto $x: ${1: a}) cin >> x;"]
+    "body": [
+      "vector<int> ${1:a};",
+      "for (auto $x: ${1: a}) cin >> x;"
+    ]
   },
   "Read int": {
     "prefix": "rei",
-    "body": ["int ${1:a};", "cin >> ${1:a};"]
+    "body": [
+      "int ${1:a};",
+      "cin >> ${1:a};"
+    ]
   },
   //
   "operator<<": {
@@ -245,6 +332,16 @@
       "    s << a[a.size() - 1] << \"]\";",
       "    return s;",
       "}"
+    ]
+  },
+  "pragma once": {
+    "description": "Pragma once",
+    "prefix": [
+      "once",
+      "pragma"
+    ],
+    "body": [
+      "#pragma once"
     ]
   }
 }
