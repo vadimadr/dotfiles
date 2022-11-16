@@ -8,6 +8,39 @@ My configuration files (.dotfiles), including:
 - ranger
 - ...
 
+tl;dr deploy checklist
+----- 
+1. install `zsh`
+2. install `python>=3.6` and `click`
+
+setup **zsh** env:
+
+1. deploy env
+```
+./dotfiles.py deploy -g zsh -m hard
+```
+2. install starship
+```bash
+cd ~/local/bin
+wget -O starship.tar.gz https://github.com/starship/starship/releases/download/v1.11.0/starship-x86_64-unknown-linux-musl.tar.gz
+tar xvf starship.tar.gz && rm starship.tar.gz
+```
+3. install **fzf**
+
+!! do not update shell env during install
+```bash
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf -b 0.35.0
+~/.fzf/install
+```
+
+4. fasd??
+
+5. change shell to zsh
+```bash
+chsh $USER -s $(which zsh)
+```
+
+
 Using dotfiles.py
 ------
 I created this simple script to simplify synchronization of deployed configurations with git repo.
