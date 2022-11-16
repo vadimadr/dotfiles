@@ -26,6 +26,17 @@ style = 'blue'
 
 [docker_context]
 symbol = " "
+style = 'blue bold'
+format = 'via [$symbol$context]($style) '
+only_with_files = false
+disabled = false
+detect_extensions = []
+# detect_files = [
+#     'docker-compose.yml',
+#     'docker-compose.yaml',
+#     'Dockerfile',
+# ]
+detect_folders = []
 
 [elixir]
 symbol = " "
