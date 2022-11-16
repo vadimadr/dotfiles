@@ -12,7 +12,9 @@ alias scp='noglob scp'
 alias sftp='noglob sftp'
 
 # enable fasd pruductivity booster
-eval "$(fasd --init posix-alias zsh-hook zsh-ccomp zsh-ccomp-install zsh-wcomp zsh-wcomp-install)"
+if [[ -x $(command -v fasd) ]]; then
+  eval "$(fasd --init posix-alias zsh-hook zsh-ccomp zsh-ccomp-install zsh-wcomp zsh-wcomp-install)"
+fi
 
 alias mkdir='mkdir -pv'
 alias grep="grep --color=auto"
@@ -220,9 +222,13 @@ function _patch_path_var() {
   _var_name=$1
   _new_path=$2
 
-  new_value="${(P)_var_name}:$(realpath $_new_path)" 
-  # Replace consecutive :, : at the begging and end of line
-  new_value=$( echo $new_value | sed -r -e 's/:+/:/g' -e 's/(^:)|(:$)//g' )
+  if [[ -n $_new_path ]]; then
+    new_value="${(P)_var_name}:$(realpath $_new_path)" 
+    # Replace consecutive :, : at the begging and end of line
+    new_value=$( echo $new_value | sed -r -e 's/:+/:/g' -e 's/(^:)|(:$)//g' )
+  else
+    new_value="${(P)_var_name}"
+  fi
 
   export $_var_name=$new_value
 

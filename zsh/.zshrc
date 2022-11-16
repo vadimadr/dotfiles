@@ -1,3 +1,27 @@
+# has to be added at the top
+# for example to correctly launch locally installed tmux
+
+# add ~/local/bin or ~/opt/local/bin to PATH
+if [[ -d $HOME/local/bin ]]; then
+    _local_bin_path=$HOME/local/bin
+elif [[ -d $HOME/opt/local/bin ]]; then
+    _local_bin_path=$HOME/opt/local/bin
+fi
+if [[ ! $PTAH =~ $_local_bin_path ]]; then
+    export PATH="${_local_bin_path}:${PATH}"
+fi
+# add ~/local/lib or ~/opt/local/lib to LD_LIBRARY_PATH
+if [[ -d $HOME/local/lib ]]; then
+    _local_lib_path=$HOME/local/lib
+elif [[ -d $HOME/opt/local/lib ]]; then
+    _local_lib_path=$HOME/opt/local/lib
+fi
+if [[ $OSTYPE =~ linux ]]; then
+    if [[ ! $LD_LIBRARY_PATH =~ $_local_lib_path ]]; then
+        export LD_LIBRARY_PATH="${_local_lib_path}:${LD_LIBRARY_PATH}"
+    fi
+fi
+
 # Start tmux
 if [[ ! $TERM =~ screen && -z "$NO_TMUX" ]]; then
     exec tmux
@@ -124,6 +148,7 @@ antigen bundle zsh-users/zsh-history-substring-search
 
 # Disable brew updates (takes ~20 minutes to update all packages recursively)
 export HOMEBREW_NO_AUTO_UPDATE=1
+
 
 # Some completion settings
 source $ZSHRCD/zstyles.zsh

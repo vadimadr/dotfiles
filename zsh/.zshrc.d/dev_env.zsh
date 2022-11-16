@@ -52,6 +52,7 @@ unset CONDA_SHLVL
 _conda_search_paths=(
     "$HOME/opt/conda_arm"
     "$HOME/anaconda3"
+    "$HOME/conda"
 )
 
 for _conda_path in ${_conda_search_paths[@]}; do
