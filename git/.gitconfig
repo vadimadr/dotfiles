@@ -13,10 +13,6 @@
 	br = branch
 	b = branch
 	r = reset
-	r1 = reset HEAD^
-	rr = reset HEAD^
-	rh = reset HEAD^
-	r2 = reset HEAD^^
 	diff = diff --word-diff
 	unstage = rm --cached -r
 	amend = commit --amend
@@ -53,4 +49,7 @@
 	process = git-lfs filter-process
 	required = true
 [push]
+	# by-default push current branch to a branch with the same name.
+	default = current
+[pull]
 	default = current

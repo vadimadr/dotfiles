@@ -1,34 +1,190 @@
 {
-    "window.zoomLevel": 0,
-    "python.pythonPath": "/home/vadim/.virtualenvs/py36/bin/python3",
-    "terminal.integrated.env.linux": {
-        "NO_TMUX": "1"
-    },
-    "window.title": "${dirty}${rootName}${separator}${activeEditorShort}${separator}${appName}",
-    "window.titleBarStyle": "custom",
-    "python.linting.mypyCategorySeverity.error": "Warning",
-    "python.linting.pylintCategorySeverity.error": "Warning",
-    "python.linting.pycodestyleArgs": ["--ignore=E203", "--max-line-length=88"],
-    "python.formatting.provider": "black",
-    "editor.suggestSelection": "first",
-    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-    "python.jediEnabled": false,
-    "tabnine.experimentalAutoImports": true,
-    "python.languageServer": "Pylance",
-    "git.enableSmartCommit": true,
-    "jupyter.jupyterServerType": "remote",
-    "jupyter.askForKernelRestart": false,
-    "jupyter.alwaysTrustNotebooks": true,
-    "files.autoSave": "afterDelay",
-    "jupyter.interactiveWindowMode": "perFile",
-    "explorer.confirmDelete": false,
-    "explorer.confirmDragAndDrop": false,
-    "workbench.editorAssociations": [
-        {
-            "viewType": "jupyter.notebook.ipynb",
-            "filenamePattern": "*.ipynb"
-        }
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter-notebook"
+  },
+  "terminal.integrated.env.linux": {
+    "NO_TMUX": "1"
+  },
+  "terminal.integrated.env.osx": {
+    "NO_TMUX": "1"
+  },
+  "window.title": "${dirty}${rootName}${separator}${activeEditorShort}${separator}${appName}",
+  "window.titleBarStyle": "custom",
+  "python.linting.mypyCategorySeverity.error": "Warning",
+  "python.linting.pylintCategorySeverity.error": "Warning",
+  "python.linting.pycodestyleArgs": [
+    "--ignore=E203",
+    "--max-line-length=88"
+  ],
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "python.jediEnabled": false,
+  "tabnine.experimentalAutoImports": true,
+  "python.languageServer": "Pylance",
+  "git.enableSmartCommit": true,
+  "jupyter.jupyterServerType": "local",
+  "jupyter.alwaysTrustNotebooks": true,
+  "files.autoSave": "afterDelay",
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "cmake.configureOnOpen": false,
+  "bookmarks.sideBar.expanded": true,
+  "editor.accessibilitySupport": "off",
+  "jupyter.disableJupyterAutoStart": true,
+  "python.condaPath": "/Users/vadimadr/opt/conda_arm/bin/conda",
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.indexing": true,
+  // "go.toolsGopath": "/opt/homebrew/opt/go",
+  "go.goroot": "/opt/homebrew/opt/go/libexec",
+  "vim.easymotion": true,
+  "vim.vimrc.enable": true,
+  "vim.vimrc.path": "$HOME/vscode.vimrc",
+  "vim.camelCaseMotion.enable": true,
+  "vim.useCtrlKeys": false,
+  "terminal.integrated.inheritEnv": false,
+  "editor.formatOnSave": true,
+  "git.path": "/opt/homebrew/bin/git",
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    // "editor.defaultFormatter": "PascalReitermann93.vscode-yaml-sort"
+  },
+  "git.autofetch": true,
+  "notebook.cellToolbarLocation": {
+    "default": "right",
+    "jupyter-notebook": "left"
+  },
+  "security.workspace.trust.untrustedFiles": "open",
+  "python.defaultInterpreterPath": "/Users/vadimadr/opt/conda_arm/bin/python",
+  "nasc-touchbar.addCursorBelow": false,
+  "nasc-touchbar.peekDefinition": true,
+  "nasc-touchbar.showReferences": true,
+  "cmake.touchbar.visibility": "hidden",
+  "jupyter.experiments.enabled": false,
+  "cSpell.userWords": [
+    "ascontiguousarray",
+    "calibs",
+    "cmake",
+    "cobertura",
+    "colorsys",
+    "dateutil",
+    "DCMAKE",
+    "deque",
+    "dtype",
+    "htmlcov",
+    "imread",
+    "imshow",
+    "imwrite",
+    "Kalman",
+    "keypoints",
+    "numpy",
+    "Onnx",
+    "popleft",
+    "proba",
+    "probas",
+    "reidentification",
+    "tofa",
+    "tqdm",
+    "tracklet",
+    "tracklets",
+    "undistort",
+    "unsqueeze",
+    "venv",
+    "virtualenv",
+    "xaxis"
+  ],
+  "task.problemMatchers.neverPrompt": {
+    "shell": true
+  },
+  "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 120, AlignOperands: false, AccessModifierOffset: -2, AllowShortFunctionsOnASingleLine: None  }",
+  "cmake.cmakePath": "/opt/homebrew/bin/cmake",
+  "editor.snippetSuggestions": "top",
+  "go.toolsManagement.autoUpdate": true,
+  "workbench.editor.pinnedTabSizing": "compact",
+  "workbench.editor.tabSizing": "shrink",
+  "editor.tabCompletion": "onlySnippets",
+  "cph.general.defaultLanguage": "cpp",
+  "cph.general.ignoreSTDERROR": true,
+  "cph.general.useShortCodeForcesName": true,
+  "cph.language.cpp.Args": "-DQQQ -DNO_FILE",
+  "C_Cpp.suggestSnippets": false,
+  "debug.onTaskErrors": "abort",
+  "C_Cpp.default.cppStandard": "c++17",
+  "C_Cpp.default.cStandard": "c17",
+  "cph.general.defaultLanguageTemplateFileLocation": "/Users/vadimadr/dev/competitive/template.cpp",
+  "C_Cpp.updateChannel": "Insiders",
+  "cSpell.language": "en,ru",
+  "workbench.editor.untitled.hint": "hidden",
+  "python.formatting.provider": "black",
+  "jupyter.askForKernelRestart": false,
+  "jupyter.allowUnauthorizedRemoteConnection": true,
+  "cmake.touchbar.advanced": {},
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
+    "yaml": false,
+    "python": false
+  },
+  "editor.inlineSuggest.enabled": true,
+  "search.exclude": {
+    "**/__pycache__": true,
+    "**/*.egg-info": true,
+    "**/*.ipynb": true
+  },
+  "github.copilot.advanced": {},
+  "diffEditor.ignoreTrimWhitespace": false,
+  "terminal.integrated.shellIntegration.enabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.flake8CategorySeverity.F": "Warning",
+  "python.linting.flake8Args": [
+    "--max-line-length=88",
+    "--ignore=E203"
+  ],
+  "update.mode": "start",
+  "jupyter.enableExtendedKernelCompletions": true,
+  "jupyter.generateSVGPlots": true,
+  "jupyter.logging.level": "info",
+  "jupyter.logKernelOutputSeparately": true,
+  "[python]": {
+    "gitlens.codeLens.symbolScopes": [
+      "!Module"
     ],
-    "cmake.configureOnOpen": false,
-    "bookmarks.sideBar.expanded": true
+    "editor.wordBasedSuggestions": false,
+    "editor.rulers": [
+      {
+        "column": 80,
+        "color": "#282828"
+      },
+      {
+        "column": 88,
+        "color": "#282828"
+      },
+      {
+        "column": 120,
+        "color": "#282828"
+      }
+    ],
+    "editor.formatOnType": true
+  },
+  "outline.showVariables": false,
+  "outline.showFields": true,
+  "editor.stickyScroll.enabled": true,
+  "mergeEditor.diffAlgorithm": "experimental",
+  "docker.dockerPath": "/usr/local/bin/docker",
+  "git.confirmSync": false,
+  "terminal.integrated.enableMultiLinePasteWarning": false,
+  "[cpp]": {
+    "editor.wordBasedSuggestions": false,
+    "editor.suggest.insertMode": "replace",
+    "editor.semanticHighlighting.enabled": true
+  },
+  "editor.minimap.enabled": false,
+  "git.openRepositoryInParentFolders": "never",
+  "jupyter.interactiveWindow.creationMode": "perFile",
+  "jupyter.interactiveWindow.textEditor.autoMoveToNextCell": false
 }

@@ -2,6 +2,10 @@
 format = '[$user]($style)@'
 style_user = 'green dimmed'
 
+[hostname]
+ssh_only = true
+format = '[$hostname]($style) in '
+
 [aws]
 symbol = "  "
 disabled = true

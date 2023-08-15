@@ -2,7 +2,7 @@
 alias bower='noglob bower'
 alias fc='noglob fc'
 alias find='noglob find'
-alias fd='noglob fd'
+alias fd='noglob fd -HI'
 alias ftp='noglob ftp'
 alias history='noglob history'
 alias locate='noglob locate'
@@ -212,6 +212,11 @@ alias ww=which
 alias gg=grep
 alias gr=grep
 alias stat=/usr/bin/stat
+
+# macos specific
+alias ldd="otool -L"
+alias lddr="otool -Lr"
+alias lddi="otool -L -I"
 
 alias sd='s systemctl'
 alias dcmp='docker-compose'
