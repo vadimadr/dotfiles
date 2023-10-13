@@ -8,14 +8,8 @@
   "terminal.integrated.env.osx": {
     "NO_TMUX": "1"
   },
-  "window.title": "${dirty}${rootName}${separator}${activeEditorShort}${separator}${appName}",
+  "window.title": "${dirty}${rootName}${separator}${activeEditorShort}",
   "window.titleBarStyle": "custom",
-  "python.linting.mypyCategorySeverity.error": "Warning",
-  "python.linting.pylintCategorySeverity.error": "Warning",
-  "python.linting.pycodestyleArgs": [
-    "--ignore=E203",
-    "--max-line-length=88"
-  ],
   "editor.suggestSelection": "first",
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
   "python.jediEnabled": false,
@@ -42,8 +36,7 @@
   "vim.vimrc.path": "$HOME/vscode.vimrc",
   "vim.camelCaseMotion.enable": true,
   "vim.useCtrlKeys": false,
-  "terminal.integrated.inheritEnv": false,
-  "editor.formatOnSave": true,
+  "terminal.integrated.inheritEnv": true,
   "git.path": "/opt/homebrew/bin/git",
   "[jsonc]": {
     "editor.defaultFormatter": "vscode.json-language-features"
@@ -65,28 +58,40 @@
   "cmake.touchbar.visibility": "hidden",
   "jupyter.experiments.enabled": false,
   "cSpell.userWords": [
+    "adamw",
     "ascontiguousarray",
+    "astype",
     "calibs",
     "cmake",
     "cobertura",
     "colorsys",
+    "crossentropy",
+    "cutmix",
+    "dataframe",
     "dateutil",
     "DCMAKE",
     "deque",
     "dtype",
+    "frombuffer",
     "htmlcov",
+    "iloc",
+    "imdecode",
     "imread",
     "imshow",
     "imwrite",
     "Kalman",
     "keypoints",
+    "NGPU",
     "numpy",
     "Onnx",
     "popleft",
     "proba",
     "probas",
     "reidentification",
+    "resnext",
+    "steplr",
     "tofa",
+    "torchvision",
     "tqdm",
     "tracklet",
     "tracklets",
@@ -118,17 +123,16 @@
   "C_Cpp.updateChannel": "Insiders",
   "cSpell.language": "en,ru",
   "workbench.editor.untitled.hint": "hidden",
-  "python.formatting.provider": "black",
   "jupyter.askForKernelRestart": false,
   "jupyter.allowUnauthorizedRemoteConnection": true,
   "cmake.touchbar.advanced": {},
   "github.copilot.enable": {
     "*": true,
     "plaintext": false,
-    "markdown": false,
+    "markdown": true,
     "scminput": false,
-    "yaml": false,
-    "python": false
+    "yaml": true,
+    "python": true
   },
   "editor.inlineSuggest.enabled": true,
   "search.exclude": {
@@ -139,15 +143,8 @@
   "github.copilot.advanced": {},
   "diffEditor.ignoreTrimWhitespace": false,
   "terminal.integrated.shellIntegration.enabled": true,
-  "python.linting.flake8Enabled": true,
-  "python.linting.flake8CategorySeverity.F": "Warning",
-  "python.linting.flake8Args": [
-    "--max-line-length=88",
-    "--ignore=E203"
-  ],
   "update.mode": "start",
   "jupyter.enableExtendedKernelCompletions": true,
-  "jupyter.generateSVGPlots": true,
   "jupyter.logging.level": "info",
   "jupyter.logKernelOutputSeparately": true,
   "[python]": {
@@ -169,12 +166,14 @@
         "color": "#282828"
       }
     ],
-    "editor.formatOnType": true
+    "editor.formatOnType": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "ms-python.black-formatter"
   },
   "outline.showVariables": false,
   "outline.showFields": true,
   "editor.stickyScroll.enabled": true,
-  "mergeEditor.diffAlgorithm": "experimental",
+  "mergeEditor.diffAlgorithm": "advanced",
   "docker.dockerPath": "/usr/local/bin/docker",
   "git.confirmSync": false,
   "terminal.integrated.enableMultiLinePasteWarning": false,
@@ -186,5 +185,25 @@
   "editor.minimap.enabled": false,
   "git.openRepositoryInParentFolders": "never",
   "jupyter.interactiveWindow.creationMode": "perFile",
-  "jupyter.interactiveWindow.textEditor.autoMoveToNextCell": false
+  "jupyter.interactiveWindow.textEditor.autoMoveToNextCell": false,
+  "flake8.args": [
+    "--max-line-length=88",
+    "--ignore=E203"
+  ],
+  "jupyter.generateSVGPlots": true,
+  "black-formatter.importStrategy": "fromEnvironment",
+  "editor.defaultFormatter": "ms-python.black-formatter",
+  "python.formatting.provider": "none",
+  "diffEditor.hideUnchangedRegions.enabled": true,
+  "terminal.integrated.defaultProfile.osx": "zsh_brew",
+  "terminal.integrated.profiles.osx": {
+    "zsh_brew" : {
+      "path": "/opt/homebrew/bin/zsh",
+      "args": ["-l", "-i"],
+      "env": {
+        "NO_TMUX": "1",
+        // "PATH": "/opt/homebrew/bin"
+      }
+    },
+  }
 }

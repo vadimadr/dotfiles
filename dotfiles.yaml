@@ -23,10 +23,6 @@ files:
     vscode/keybindings.json: ~/Library/Application Support/Code/User/keybindings.json
     vscode/settings.json: ~/Library/Application Support/Code/User/settings.json
     vscode/snippets: ~/Library/Application Support/Code/User/snippets
-    # todo: need to support OS-agnostic paths 
-    # vscode/keybindings.json: ~/.config/Code/User/keybindings.json
-    # vscode/settings.json: ~/.config/Code/User/settings.json
-    # vscode/snippets: ~/.config/Code/User/snippets
   xfce:
     xfce/Thunar/accels.scm: ~/.config/Thunar/accels.scm
     xfce/Thunar/uca.xml: ~/.config/Thunar/uca.xml
