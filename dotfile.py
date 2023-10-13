@@ -1,20 +1,21 @@
 #!/usr/bin/env python3
+import logging
 import os
+import shlex
 import shutil
+import subprocess
+import warnings
 from copy import deepcopy
 from pathlib import Path
-import warnings
-import subprocess
-import shlex
 
 import click
 import yaml
-import logging
 
 LOGGING_FORMAT = "%(asctime)s %(name)s [%(levelname)s]: %(message)s"
 
 try:
     import coloredlogs
+
     coloredlogs.install(level="INFO", fmt=LOGGING_FORMAT)
 except ImportError:
     logging.basicConfig(level=logging.INFO, format=LOGGING_FORMAT)
@@ -110,6 +111,7 @@ def sync(group, copy_mode):
 
     _sync_group(config_group)
 
+
 @main.command("status", help="Check whether deployed files are up-to-date")
 @click.option("-g", "--group", type=str)
 @click.option(
@@ -130,7 +132,9 @@ def status(group, copy_mode):
             else:
                 local_path = Path(local)
                 deploy_path = Path(deploy).expanduser().resolve()
-                ok &= status_tree(local_path, deploy_path.parent, deploy_path, copy_mode)
+                ok &= status_tree(
+                    local_path, deploy_path.parent, deploy_path, copy_mode
+                )
 
     _status_group(config_group)
     if ok:
@@ -202,26 +206,32 @@ def status_tree(local_path: Path, deploy_dir, deploy_file: Path, mode="hard"):
         if not deploy_file.is_dir():
             logger.warning(f"Deployed file {deploy_file} is not a directory.")
             return False
-        
+
         local_files = list(local_path.iterdir())
         deployed_files = list(deploy_file.iterdir())
 
         local_names = set([p.name for p in local_files])
         deploy_names = set([p.name for p in deployed_files])
         if local_names != deploy_names:
-            logger.warning(f"Directories {local_path} and {deploy_file} are not the same!")
+            logger.warning(
+                f"Directories {local_path} and {deploy_file} are not the same!"
+            )
             l_diff = local_names.difference(deploy_names)
             r_diff = deploy_names.difference(local_names)
             if len(l_diff) > 0:
                 diff_names = ", ".join(list(l_diff)[:5])
                 if len(l_diff) > 5:
                     diff_names = diff_names + "..."
-                logger.warning(f"Directory {deploy_file} missing {len(l_diff)} more files: {diff_names}")
+                logger.warning(
+                    f"Directory {deploy_file} missing {len(l_diff)} more files: {diff_names}"
+                )
             if len(r_diff) > 0:
                 diff_names = ", ".join(list(r_diff)[:5])
                 if len(r_diff) > 5:
                     diff_names = diff_names + "..."
-                logger.warning(f"Directory {deploy_file} have {len(r_diff)} not added files: {diff_names}")
+                logger.warning(
+                    f"Directory {deploy_file} have {len(r_diff)} not added files: {diff_names}"
+                )
             status = False
 
         # Step into subdirectories
@@ -231,18 +241,20 @@ def status_tree(local_path: Path, deploy_dir, deploy_file: Path, mode="hard"):
 
     # Both files are plain files or symlinks
     if deploy_file.is_dir():
-        logger.warning(f"File {local_path} is plain file but {deploy_file} is a directory ")
+        logger.warning(
+            f"File {local_path} is plain file but {deploy_file} is a directory "
+        )
         return False
     # both local and deployed are plain files
     if local_path.samefile(deploy_file):
         # identical files
         logger.debug(f"Same files {local_path} {deploy_file}")
         return True
-    
+
     if mode in ("hard", "copy") and deploy_file.is_symlink():
         logger.warning(f"File {deploy_file} is a symlink, but mode={mode}")
         return False
-    elif mode == "soft" and not  deploy_file.is_symlink():
+    elif mode == "soft" and not deploy_file.is_symlink():
         logger.warning(f"File {deploy_file} is not symlink.")
         return False
 
@@ -251,11 +263,13 @@ def status_tree(local_path: Path, deploy_dir, deploy_file: Path, mode="hard"):
     elif mode == "copy" and not files_are_same(local_path, deploy_file):
         logger.warning(f"Files {local_path} and {deploy_file} differ")
     elif mode == "soft" and deploy_file.readlink().resolve() != local_path.resolve():
-        logger.warning(f"Link {deploy_file} points to a different file ({deploy_file.readlink()})")
+        logger.warning(
+            f"Link {deploy_file} points to a different file ({deploy_file.readlink()})"
+        )
     else:
         return True
     return False
-        
+
 
 def copy_tree(
     file_or_dir: Path, destination_dir: Path, destination_file: Path = None, **copy_args
@@ -286,7 +300,9 @@ def copy_file(src: Path, dst: Path, mode="hard", only_newer=True):
             return
 
         if dst.is_dir():
-            logger.error(f"File {dir} is a directory, but {src} is a plain file. Can not replace it")
+            logger.error(
+                f"File {dir} is a directory, but {src} is a plain file. Can not replace it"
+            )
             raise IsADirectoryError(f"Can not replace {dst} with {src}")
 
     if verbose:
@@ -311,7 +327,7 @@ def get_config_group(group):
     else:
         config_group = config_file_list
     if config_group is None:
-        # Empty dict keys in PyYAML are None by default 
+        # Empty dict keys in PyYAML are None by default
         return {}
     return config_group
 
@@ -347,18 +363,17 @@ def detect_submodules(path: Path):
         run_command(f"git submodule add {url} {relative_folder}")
     os.chdir(curdir.as_posix())
 
-def files_are_same(src: Path, dst:Path):
+
+def files_are_same(src: Path, dst: Path):
     if src.stat().st_size != dst.stat().st_size:
         return False
-    code1, out1, _ = run_command(f"md5sum {src}") 
-    code2, out2, _ = run_command(f"md5sum {dst}") 
+    code1, out1, _ = run_command(f"md5sum {src}")
+    code2, out2, _ = run_command(f"md5sum {dst}")
     if code1 != 0 or code2 != 0:
         raise RuntimeError("md5sun returned non zero exit code.")
     if out1.split()[0] != out2.split()[0]:
         return False
     return True
-    
-
 
 
 if __name__ == "__main__":
