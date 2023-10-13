@@ -20,6 +20,11 @@ if [[ -n $_local_lib_path && ! $LD_LIBRARY_PATH =~ $_local_lib_path ]]; then
     export LD_LIBRARY_PATH="${_local_lib_path}:${LD_LIBRARY_PATH}"
 fi
 
+# brew 
+if [[ -f /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 # Start tmux
 # Use oh-my-zsh/tmux instead! (solves [exited] issue)
 # if [[ ! $TERM =~ screen && -z "$NO_TMUX" ]]; then
@@ -106,21 +111,26 @@ antigen use oh-my-zsh
 antigen bundle command-not-found
 # iterate through dir stack using keybinds (C-up/C-down)
 antigen bundle dircycle
+antigen bundle gcloud
 # Git related aliases
-antigen bundle git
+# antigen bundle git
 # Tmux aliases
 ZSH_TMUX_AUTOSTART=false
 ZSH_TMUX_AUTOCONNECT=false
 # antigen bundle tmux
 # pip completions
 antigen bundle pip
-# allows to run google ... in terminal!
-antigen bundle web-search
-# needed for pure theme
-antigen bundle mafredri/zsh-async
+
+# # needed for pure theme
+# antigen bundle mafredri/zsh-async
 # suggest while you type
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-ZSH_AUTOSUGGEST_USE_ASYNC=true
+
+# async autosuggest works weird
+# it erases some autosuggestions set in .zshrc (like from gcloud)
+# what is the purpose of having them?
+ZSH_AUTOSUGGEST_USE_ASYNC=false
+
 antigen bundle zsh-users/zsh-autosuggestions
 # additional completions
 antigen bundle zsh-users/zsh-completions
@@ -145,14 +155,16 @@ antigen bundle zdharma-continuum/fast-syntax-highlighting
 # Type part of the command and navigate with up / down arrows
 antigen bundle zsh-users/zsh-history-substring-search
 
+antigen bundle agkozak/zsh-z
+
 # Disable brew updates (takes ~20 minutes to update all packages recursively)
 export HOMEBREW_NO_AUTO_UPDATE=1
-
 
 # Some completion settings
 source $ZSHRCD/zstyles.zsh
 # My custom aliases & snippets
 # Load after antigen setup to overwrite plugin aliases
+
 source $ZSHRCD/aliases.zsh
 # My custom shortcuts
 source $ZSHRCD/bindkeys.zsh
@@ -161,6 +173,8 @@ source $ZSHRCD/colors.zsh
 source $ZSHRCD/dev_env.zsh
 
 antigen apply
+
+source $ZSHRCD/completions.zsh
 
 # Enable fuzzy finder
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

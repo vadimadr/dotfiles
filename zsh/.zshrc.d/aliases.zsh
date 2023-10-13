@@ -282,3 +282,13 @@ fuck () {
     export PYTHONIOENCODING=$TF_PYTHONIOENCODING;
     test -n "$TF_CMD" && print -s $TF_CMD
 }
+
+# google cloud
+alias gcp="noglob gcloud"
+alias gs="noglob gsutil"
+
+alias gccp="noglob gsutil -m cp"
+alias gcs="noglob gcloud storage"
+alias gaip="gclolud ai-platform"
+alias gai="gclolud ai"
+

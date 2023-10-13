@@ -11,7 +11,7 @@ symbol = "  "
 disabled = true
 
 [gcloud]
-disabled = true
+disabled = false
 
 [conda]
 symbol = " "
