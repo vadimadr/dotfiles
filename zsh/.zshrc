@@ -112,6 +112,7 @@ antigen bundle command-not-found
 # iterate through dir stack using keybinds (C-up/C-down)
 antigen bundle dircycle
 antigen bundle gcloud
+antigen bundle kubectl
 # Git related aliases
 # antigen bundle git
 # Tmux aliases
@@ -175,6 +176,8 @@ source $ZSHRCD/dev_env.zsh
 antigen apply
 
 source $ZSHRCD/completions.zsh
+
+source $ZSHRCD/local.zsh
 
 # Enable fuzzy finder
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

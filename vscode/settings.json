@@ -168,7 +168,8 @@
     ],
     "editor.formatOnType": true,
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "ms-python.black-formatter"
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "black-formatter.importStrategy": "fromEnvironment",
   },
   "outline.showVariables": false,
   "outline.showFields": true,
@@ -191,8 +192,6 @@
     "--ignore=E203"
   ],
   "jupyter.generateSVGPlots": true,
-  "black-formatter.importStrategy": "fromEnvironment",
-  "editor.defaultFormatter": "ms-python.black-formatter",
   "python.formatting.provider": "none",
   "diffEditor.hideUnchangedRegions.enabled": true,
   "terminal.integrated.defaultProfile.osx": "zsh_brew",
