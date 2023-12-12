@@ -90,6 +90,7 @@ alias dk="docker"
 alias dkrmf="docker rm -f"
 alias dkr="docker run --rm -it"
 alias dke="docker exec -it"
+alias dkc="docker compose"
 alias dkrd="docker run -d -it"  # Start daemon
 alias dkrcwd="docker run --rm -it -v $(pwd):$(pwd) -w $(pwd)"  # run docker with current direcory as volume
 
