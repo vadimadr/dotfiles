@@ -26,7 +26,8 @@ alias v=vim
 
 # OS specific aliases 
 if [[ ! $OSTYPE =~ darwin ]]; then
-  alias ls="ls --color=auto"
+  # brew install coreutils
+  alias ls="gls --color=auto"
   alias xc=xclip
   alias cpr="rsync --info=progress2 --no-i-r --human-readable -a"
 else

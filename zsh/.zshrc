@@ -2,23 +2,30 @@
 # for example to correctly launch locally installed tmux
 
 # add ~/local/bin or ~/opt/local/bin to PATH
-if [[ -d $HOME/local/bin ]]; then
-    _local_bin_path=$HOME/local/bin
-elif [[ -d $HOME/opt/local/bin ]]; then
-    _local_bin_path=$HOME/opt/local/bin
-fi
-if [[ -n $_local_bin_path && ! $PTAH =~ $_local_bin_path ]]; then
-    export PATH="${_local_bin_path}:${PATH}"
-fi
-# add ~/local/lib or ~/opt/local/lib to LD_LIBRARY_PATH
-if [[ -d $HOME/local/lib ]]; then
-    _local_lib_path=$HOME/local/lib
-elif [[ -d $HOME/opt/local/lib ]]; then
-    _local_lib_path=$HOME/opt/local/lib
-fi
-if [[ -n $_local_lib_path && ! $LD_LIBRARY_PATH =~ $_local_lib_path ]]; then
-    export LD_LIBRARY_PATH="${_local_lib_path}:${LD_LIBRARY_PATH}"
-fi
+
+_local_bin_paths=(
+    "$HOME/local/bin"
+    "$HOME/.local/bin"
+    "$HOME/opt/local/bin"
+)
+
+for _local_bin_path in ${_local_bin_paths[@]}; do
+    if [[ -d $_local_bin_path && ! $PTAH =~ $_local_bin_path ]]; then
+        export PATH="${_local_bin_path}:${PATH}"
+    fi
+done
+
+_local_lib_paths=(
+    "$HOME/local/lib"
+    "$HOME/.local/lib"
+    "$HOME/opt/local/lib"
+)
+
+for _local_lib_path in ${_local_lib_paths[@]}; do
+    if [[ -d $_local_lib_path && ! $LD_LIBRARY_PATH =~ $_local_lib_path ]]; then
+        export LD_LIBRARY_PATH="${_local_lib_path}:${LD_LIBRARY_PATH}"
+    fi
+done
 
 # brew 
 if [[ -f /opt/homebrew/bin/brew ]]; then
