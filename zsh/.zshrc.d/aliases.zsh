@@ -171,8 +171,12 @@ alias py=ipython
 alias ipy="ipython"
 alias pyqt="ipy qtconsole"
 alias ipyex='xclip -selection c -o > /tmp/jupyter_connection_info.json; ipython qtconsole --existing /tmp/jupyter_connection_info.json'
-
 alias pdb="python3 -m ipdb"
+if [[ -f $(command -v poetry@latest) ]]; then
+  alias poe="poetry@latest"
+else
+  alias poe="poetry"
+fi
 
 
 alias pl="perl -lan"
