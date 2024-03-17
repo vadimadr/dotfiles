@@ -1,5 +1,6 @@
 files:
-  direnv/.direnvrc: ~/.direnvrc
+  direnv:
+    direnv/.direnvrc: ~/.direnvrc
   git:
     git/.gitconfig: ~/.gitconfig
   jupyter:
