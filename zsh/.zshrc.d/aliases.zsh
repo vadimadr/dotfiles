@@ -96,10 +96,10 @@ alias dkrd="docker run -d -it"  # Start daemon
 alias dkrcwd="docker run --rm -it -v $(pwd):$(pwd) -w $(pwd)"  # run docker with current direcory as volume
 
 # pip aliases
-alias pipi="pip install"
-alias pipu="pip uninstall"
-alias pipr=pipu
-alias pipir="pip install -r requirements.txt"
+alias ppi="pip install"
+alias ppu="pip uninstall"
+alias ppr=pipu
+alias ppir="pip install -r requirements.txt"
 
 function aptp() { sudo add-apt-repository "$@" && sudo apt-get update;}
 

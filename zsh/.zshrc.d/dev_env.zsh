@@ -2,7 +2,7 @@
 if [[ -f $HOME/.local/bin/virtualenvwrapper.sh ]]; then
     WORKON_HOME=$HOME/.virtualenvs
     VIRTUALENVWRAPPER_SCRIPT=$HOME/.local/bin/virtualenvwrapper.sh
-    VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+    VIRTUALENVWRAPPER_PYTHON=$(which python3)
     VIRTUALENVWRAPPER_VIRTUALENV=$HOME/.local/bin/virtualenv
     source  $HOME/.local/bin/virtualenvwrapper_lazy.sh
 
