@@ -117,6 +117,7 @@ antigen use oh-my-zsh
 # Suggest package to install missing commands
 antigen bundle command-not-found
 # iterate through dir stack using keybinds (C-up/C-down)
+antigen bundle direnv
 antigen bundle dircycle
 antigen bundle gcloud
 antigen bundle kubectl
