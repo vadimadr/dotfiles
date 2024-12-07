@@ -170,7 +170,7 @@ def deploy(group, copy_mode, force):
             if isinstance(deploy, dict):
                 _deploy_group(deploy)
             else:
-                deploy_path = Path(deploy).expanduser().resolve()
+                deploy_path = Path(deploy).expanduser().absolute()
                 copy_tree(
                     Path(local),
                     deploy_path.parent,
@@ -291,7 +291,17 @@ def copy_tree(
 
 def copy_file(src: Path, dst: Path, mode="hard", only_newer=True):
     assert mode in ("hard", "soft", "copy", "none")
-    if dst.exists() and only_newer:
+    if dst.is_symlink() and mode == "soft":
+        # We need to handle symlinks before checking for file existence
+        # dst.exists() will return existance of the symlink target
+        # rather than the symlink itself
+
+        # We need to remove old symlink before creating a new one
+        # otherwise os.symlink will fail
+        logger.info(f"Removing old symlink {dst}")
+        dst.unlink()
+    elif dst.exists() and only_newer:
+        # Do replace destination file if it is newer than source
         src_time = src.stat().st_ctime
         dst_time = dst.stat().st_ctime
         if dst_time >= src_time:
@@ -304,18 +314,25 @@ def copy_file(src: Path, dst: Path, mode="hard", only_newer=True):
                 f"File {dir} is a directory, but {src} is a plain file. Can not replace it"
             )
             raise IsADirectoryError(f"Can not replace {dst} with {src}")
+    elif dst.is_symlink():
+        # Can be tricky to handle symlinks
+        logger.error(f"File {dst} is a symlink, but mode={mode}")
+        return
 
     if verbose:
         logger.info(f"Copying {src} -> {dst} mode={mode}")
 
-    if dst.is_file():
+    # Remove destination file if it exists
+    # At this point we know that target is not newer than src
+    if dst.is_file() or dst.is_symlink():
         logger.info(f"File {dst} already exists, but {src} is newer! Replacing it")
         dst.unlink()
 
     if mode == "hard":
         os.link(src, dst)
     elif mode == "soft":
-        os.symlink(src, dst)
+        logger.info(f"Creating symlink {src.absolute()} -> {dst}")
+        os.symlink(src.absolute(), dst)
     elif mode == "copy":
         shutil.copy2(src, dst)
 
