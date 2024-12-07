@@ -25,6 +25,10 @@ files:
     vscode/keybindings.json: ~/Library/Application Support/Code/User/keybindings.json
     vscode/settings.json: ~/Library/Application Support/Code/User/settings.json
     vscode/snippets: ~/Library/Application Support/Code/User/snippets
+  cursor:
+    vscode/keybindings.json: ~/Library/Application Support/Cursor/User/keybindings.json
+    vscode/settings.json: ~/Library/Application Support/Cursor/User/settings.json
+    vscode/snippets: ~/Library/Application Support/Cursor/User/snippets
   xfce:
     xfce/Thunar/accels.scm: ~/.config/Thunar/accels.scm
     xfce/Thunar/uca.xml: ~/.config/Thunar/uca.xml

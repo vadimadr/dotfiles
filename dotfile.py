@@ -299,6 +299,7 @@ def copy_file(src: Path, dst: Path, mode="hard", only_newer=True):
         # We need to remove old symlink before creating a new one
         # otherwise os.symlink will fail
         logger.info(f"Removing old symlink {dst}")
+        # Since mode == "soft", we are not in dry-run and must remove the symlink
         dst.unlink()
     elif dst.exists() and only_newer:
         # Do replace destination file if it is newer than source
@@ -326,7 +327,9 @@ def copy_file(src: Path, dst: Path, mode="hard", only_newer=True):
     # At this point we know that target is not newer than src
     if dst.is_file() or dst.is_symlink():
         logger.info(f"File {dst} already exists, but {src} is newer! Replacing it")
-        dst.unlink()
+        # Do not remove files in dry-run mode!
+        if mode != "none":
+            dst.unlink()
 
     if mode == "hard":
         os.link(src, dst)
