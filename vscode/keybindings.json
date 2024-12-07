@@ -71,11 +71,12 @@
   //   "command": "-editor.action.moveLinesUpAction",
   //   "when": "editorTextFocus && !editorReadonly"
   // },
-  {
-    "key": "cmd+d",
-    "command": "editor.action.copyLinesDownAction",
-    "when": "editorTextFocus && !editorReadonly"
-  },
+  // Interferes with select next find match
+  // {
+  //   "key": "cmd+d",
+  //   "command": "editor.action.copyLinesDownAction",
+  //   "when": "editorTextFocus && !editorReadonly"
+  // },
   {
     "key": "ctrl+shift+alt+down",
     "command": "-editor.action.copyLinesDownAction",
@@ -169,11 +170,6 @@
   //   "command": "-editor.action.moveLinesUpAction",
   //   "when": "editorTextFocus && !editorReadonly"
   // },
-  {
-    "key": "cmd+d",
-    "command": "editor.action.copyLinesDownAction",
-    "when": "editorTextFocus && !editorReadonly"
-  },
   {
     "key": "ctrl+shift+alt+down",
     "command": "-editor.action.copyLinesDownAction",
@@ -377,11 +373,11 @@
     "command": "editor.action.addSelectionToNextFindMatch",
     "when": "editorFocus"
   },
-  {
-    "key": "cmd+d",
-    "command": "-editor.action.addSelectionToNextFindMatch",
-    "when": "editorFocus"
-  },
+  // {
+  //   "key": "cmd+d",
+  //   "command": "-editor.action.addSelectionToNextFindMatch",
+  //   "when": "editorFocus"
+  // },
   {
     "key": "ctrl+d",
     "command": "-deleteRight",
@@ -978,11 +974,11 @@
     "command": "editor.action.addSelectionToNextFindMatch",
     "when": "editorFocus"
   },
-  {
-    "key": "cmd+d",
-    "command": "-editor.action.addSelectionToNextFindMatch",
-    "when": "editorFocus"
-  },
+  // {
+  //   "key": "cmd+d",
+  //   "command": "-editor.action.addSelectionToNextFindMatch",
+  //   "when": "editorFocus"
+  // },
   {
     "key": "ctrl+d",
     "command": "-deleteRight",
