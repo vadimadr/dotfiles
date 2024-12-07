@@ -8,14 +8,14 @@
   "terminal.integrated.env.osx": {
     "NO_TMUX": "1"
   },
-  "window.title": "${dirty}${rootName}${separator}${activeEditorShort}",
+  "window.title": "${dirty}${activeRepositoryName}${separator}${rootName}${separator}${activeEditorShort}",
   "window.titleBarStyle": "custom",
   "editor.suggestSelection": "first",
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
   "python.jediEnabled": false,
   "tabnine.experimentalAutoImports": true,
   "python.languageServer": "Pylance",
-  "git.enableSmartCommit": true,
+  "git.enableSmartCommit": false,
   "jupyter.jupyterServerType": "local",
   "jupyter.alwaysTrustNotebooks": true,
   "files.autoSave": "afterDelay",
@@ -25,15 +25,15 @@
   "bookmarks.sideBar.expanded": true,
   "editor.accessibilitySupport": "off",
   "jupyter.disableJupyterAutoStart": true,
-  "python.condaPath": "/Users/vadimadr/opt/conda_arm/bin/conda",
-  "python.analysis.autoImportCompletions": true,
+  "python.condaPath": "~/conda/bin/conda",
+  "python.analysis.autoImportCompletions": false,
   "python.analysis.diagnosticMode": "workspace",
   "python.analysis.indexing": true,
   // "go.toolsGopath": "/opt/homebrew/opt/go",
   "go.goroot": "/opt/homebrew/opt/go/libexec",
   "vim.easymotion": true,
   "vim.vimrc.enable": true,
-  "vim.vimrc.path": "$HOME/vscode.vimrc",
+  "vim.vimrc.path": "~/vscode.vimrc",
   "vim.camelCaseMotion.enable": true,
   "vim.useCtrlKeys": false,
   "terminal.integrated.inheritEnv": true,
@@ -51,7 +51,7 @@
     "jupyter-notebook": "left"
   },
   "security.workspace.trust.untrustedFiles": "open",
-  "python.defaultInterpreterPath": "/Users/vadimadr/opt/conda_arm/bin/python",
+  "python.defaultInterpreterPath": "~/conda/bin/python",
   "nasc-touchbar.addCursorBelow": false,
   "nasc-touchbar.peekDefinition": true,
   "nasc-touchbar.showReferences": true,
@@ -81,14 +81,19 @@
     "imwrite",
     "Kalman",
     "keypoints",
+    "Licence",
+    "ndarray",
     "NGPU",
     "numpy",
     "Onnx",
     "popleft",
+    "postprocess",
     "proba",
     "probas",
     "reidentification",
     "resnext",
+    "softmax",
+    "standardise",
     "steplr",
     "tofa",
     "torchvision",
@@ -122,7 +127,6 @@
   "cph.general.defaultLanguageTemplateFileLocation": "/Users/vadimadr/dev/competitive/template.cpp",
   "C_Cpp.updateChannel": "Insiders",
   "cSpell.language": "en,ru",
-  "workbench.editor.untitled.hint": "hidden",
   "jupyter.askForKernelRestart": false,
   "jupyter.allowUnauthorizedRemoteConnection": true,
   "cmake.touchbar.advanced": {},
@@ -138,20 +142,19 @@
   "search.exclude": {
     "**/__pycache__": true,
     "**/*.egg-info": true,
-    "**/*.ipynb": true
+    "**/*.ipynb": false
   },
   "github.copilot.advanced": {},
   "diffEditor.ignoreTrimWhitespace": false,
   "terminal.integrated.shellIntegration.enabled": true,
   "update.mode": "start",
-  "jupyter.enableExtendedKernelCompletions": true,
   "jupyter.logging.level": "info",
   "jupyter.logKernelOutputSeparately": true,
   "[python]": {
     "gitlens.codeLens.symbolScopes": [
       "!Module"
     ],
-    "editor.wordBasedSuggestions": false,
+    "editor.wordBasedSuggestions": "off",
     "editor.rulers": [
       {
         "column": 80,
@@ -162,14 +165,13 @@
         "color": "#282828"
       },
       {
-        "column": 120,
+        "column": 99,
         "color": "#282828"
       }
     ],
-    "editor.formatOnType": true,
+    "editor.formatOnType": false,
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "ms-python.black-formatter",
-    "black-formatter.importStrategy": "fromEnvironment",
+    "editor.defaultFormatter": "ms-python.black-formatter"
   },
   "outline.showVariables": false,
   "outline.showFields": true,
@@ -179,12 +181,11 @@
   "git.confirmSync": false,
   "terminal.integrated.enableMultiLinePasteWarning": false,
   "[cpp]": {
-    "editor.wordBasedSuggestions": false,
+    "editor.wordBasedSuggestions": "off",
     "editor.suggest.insertMode": "replace",
     "editor.semanticHighlighting.enabled": true
   },
   "editor.minimap.enabled": false,
-  "git.openRepositoryInParentFolders": "never",
   "jupyter.interactiveWindow.creationMode": "perFile",
   "jupyter.interactiveWindow.textEditor.autoMoveToNextCell": false,
   "flake8.args": [
@@ -192,17 +193,68 @@
     "--ignore=E203"
   ],
   "jupyter.generateSVGPlots": true,
+  "black-formatter.importStrategy": "fromEnvironment",
+  "editor.defaultFormatter": "ms-python.black-formatter",
+  "black-formatter.args": [
+    "--line-length", "99"
+  ],
+  "black-formatter.interpreter": [
+    "~/conda/bin/python"
+  ],
   "python.formatting.provider": "none",
   "diffEditor.hideUnchangedRegions.enabled": true,
   "terminal.integrated.defaultProfile.osx": "zsh_brew",
   "terminal.integrated.profiles.osx": {
     "zsh_brew" : {
-      "path": "/opt/homebrew/bin/zsh",
+      "path": "/bin/zsh",
       "args": ["-l", "-i"],
       "env": {
         "NO_TMUX": "1",
         // "PATH": "/opt/homebrew/bin"
       }
     },
-  }
+  },
+  "workbench.editor.empty.hint": "hidden",
+  "[sql]": {
+    "editor.defaultFormatter": "mtxr.sqltools",
+    "editor.formatOnSave": true
+  },
+  "sql-formatter.uppercase": true,
+  "Prettier-SQL.keywordCase": "upper",
+  "sqltools.highlightQuery": false,
+  "sqltools.format": {
+    "reservedWordCase": "upper"
+  },
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
+  "jupyter.widgetScriptSources": [
+    "jsdelivr.com",
+    "unpkg.com"
+  ],
+  "[cpp][python]": {
+    "editor.wordBasedSuggestions": "off"
+  },
+  "jupyter.enableExtendedPythonKernelCompletions": true,
+  "terminal.integrated.fontFamily": "FiraCode Nerd Font Mono",
+  "jupyter.interactiveWindow.textEditor.executeSelection": true,
+  "notebook.stickyScroll.enabled": true,
+  "notebook.outline.showMarkdownHeadersOnly": false,
+  "notebook.outline.showCodeCells": true,
+  "notebook.lineNumbers": "on",
+  "notebook.outline.showCodeCellSymbols": false,
+  "files.associations": {
+    "*.ipynb": "json"
+  },
+  "workbench.settings.applyToAllProfiles": [
+
+  ],
+  "github.copilot.editor.enableAutoCompletions": true,
+  "vim.overrideCopy": false,
+  "vim.useSystemClipboard": true,
+  "python.analysis.nodeExecutable": "/opt/homebrew/bin/node",
+  "scm.experimental.showHistoryGraph": true,
+  "jupyter.debugJustMyCode": false,
+  "debugpy.showPythonInlineValues": true,
+  "debug.console.wordWrap": false
 }

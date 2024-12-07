@@ -60,5 +60,30 @@
     "prefix": "pdbb",
     "body": "import pdb; pdb.set_trace()",
     "description": "Set pdb breakpoint",
-  }
+  },
+  // pandas snippets
+  "dff" : {
+    "prefix": "dff",
+    "body": "df[df['$1'] == $2]",
+    "description": "Filter DataFrame"
+  },
+  "dfq": {
+    "prefix": "dfq",
+    "body": "${1:df}.query('$2')",
+    "description": "Query DataFrame"
+  },
+  // polars snippets
+  "with_columns": {
+    "prefix": ".wc",
+    "body": [
+      ".with_columns($0)",
+    ],
+    "description": "Add columns to DataFrame"
+  },
+  "map row-wise": {
+    "prefix": "allmap",
+    "body": [
+      "pl.struct(pl.all()).map_elements($0)",
+    ],
+  },
 }
