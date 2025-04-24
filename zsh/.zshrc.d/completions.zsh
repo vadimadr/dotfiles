@@ -1,6 +1,8 @@
 # need to source completions after antigen bundles (due to a bug: https://github.com/zsh-users/antigen/issues/736)
 
-autoload -U +X compinit && compinit
+# Caused zsh compinit: insecure directories, run compaudit for list.
+# autoload -U +X compinit && compinit
+
 autoload -U +X bashcompinit && bashcompinit
 
 # this is still really weird...

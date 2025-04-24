@@ -120,7 +120,7 @@ antigen bundle command-not-found
 antigen bundle direnv
 antigen bundle dircycle
 antigen bundle gcloud
-antigen bundle kubectl
+# antigen bundle kubectl
 # Git related aliases
 # antigen bundle git
 # Tmux aliases
