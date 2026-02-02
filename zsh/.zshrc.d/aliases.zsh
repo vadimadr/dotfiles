@@ -22,6 +22,7 @@ alias g="git"
 
 alias ss=subl
 alias v=vim
+alias cc=claude
 
 
 # OS specific aliases 
