@@ -93,7 +93,8 @@ def add(files, group, to, copy_mode):
     type=click.Choice(("hard", "soft", "copy", "none")),
     default=DEFAULT_COPY_MODE,
 )
-def sync(group, copy_mode):
+@click.option("--submodules", is_flag=True, help="Also sync git submodules by revision")
+def sync(group, copy_mode, submodules):
     config_group = get_config_group(group)
 
     def _sync_group(group):
@@ -101,15 +102,57 @@ def sync(group, copy_mode):
             if isinstance(deploy, dict):
                 _sync_group(deploy)
             else:
+                local_path = Path(local)
+                deploy_path = Path(deploy).expanduser().resolve()
+
+                # Determine sync direction based on timestamps
+                if local_path.exists() and deploy_path.exists():
+                    local_time = local_path.stat().st_ctime
+                    deploy_time = deploy_path.stat().st_ctime
+
+                    if local_time > deploy_time:
+                        # Local is newer - deploy it instead
+                        if verbose:
+                            logger.info(f"Local {local_path} is newer, deploying to {deploy_path}")
+                        copy_tree(
+                            local_path,
+                            deploy_path.parent,
+                            deploy_path.name,
+                            mode=copy_mode,
+                            only_newer=False,
+                        )
+                        continue
+
+                # Default: copy from deployed to local
                 copy_tree(
-                    Path(deploy).expanduser().resolve(),
-                    Path(local).parent,
-                    Path(local).name,
+                    deploy_path,
+                    local_path.parent,
+                    local_path.name,
                     mode=copy_mode,
                 )
-                detect_submodules(Path(local))
+                detect_submodules(local_path)
 
     _sync_group(config_group)
+
+    if submodules:
+        _sync_submodules(config_group)
+
+
+def _sync_submodules(group):
+    """Sync git submodules between repo and deployed locations."""
+    for local, deploy in group.items():
+        if isinstance(deploy, dict):
+            _sync_submodules(deploy)
+        else:
+            local_path = Path(local)
+            deploy_path = Path(deploy).expanduser().resolve()
+
+            # Find git repos in local path
+            for repo in find_git_repos(local_path):
+                relative = repo.relative_to(local_path)
+                deployed_repo = deploy_path / relative
+                if deployed_repo.exists():
+                    sync_submodule(repo, deployed_repo)
 
 
 @main.command("status", help="Check whether deployed files are up-to-date")
@@ -120,7 +163,8 @@ def sync(group, copy_mode):
     type=click.Choice(("hard", "soft", "copy", "none")),
     default=DEFAULT_COPY_MODE,
 )
-def status(group, copy_mode):
+@click.option("--submodules", is_flag=True, help="Also check git submodule revisions")
+def status(group, copy_mode, submodules):
     config_group = get_config_group(group)
     ok = True
 
@@ -137,10 +181,44 @@ def status(group, copy_mode):
                 )
 
     _status_group(config_group)
+
+    if submodules:
+        ok &= _status_submodules(config_group)
+
     if ok:
         logger.info("All files are identical")
     else:
         logger.warning("Some changes detected")
+
+
+def _status_submodules(group) -> bool:
+    """Check if git submodules are in sync between repo and deployed locations."""
+    ok = True
+    for local, deploy in group.items():
+        if isinstance(deploy, dict):
+            ok &= _status_submodules(deploy)
+        else:
+            local_path = Path(local)
+            deploy_path = Path(deploy).expanduser().resolve()
+
+            for repo in find_git_repos(local_path):
+                relative = repo.relative_to(local_path)
+                deployed_repo = deploy_path / relative
+                if not deployed_repo.exists():
+                    continue
+
+                repo_rev = get_git_revision(repo)
+                deploy_rev = get_git_revision(deployed_repo)
+
+                if repo_rev is None or deploy_rev is None:
+                    logger.warning(f"Submodule {repo.name}: could not get revision")
+                    ok = False
+                elif repo_rev != deploy_rev:
+                    logger.warning(
+                        f"Submodule {repo.name}: repo={repo_rev[:8]} deployed={deploy_rev[:8]}"
+                    )
+                    ok = False
+    return ok
 
 
 @main.command("deploy")
@@ -152,7 +230,8 @@ def status(group, copy_mode):
     default="none",
 )
 @click.option("-f", "--force", is_flag=True)
-def deploy(group, copy_mode, force):
+@click.option("--submodules", is_flag=True, help="Also deploy git submodule revisions")
+def deploy(group, copy_mode, force, submodules):
     config_group = get_config_group(group)
 
     if copy_mode == "none":
@@ -161,9 +240,9 @@ def deploy(group, copy_mode, force):
         )
 
     if force:
-        only_newer = True
+        only_newer = False  # Force overwrite regardless of timestamps
     else:
-        only_newer = False
+        only_newer = True   # Only copy if source is newer
 
     def _deploy_group(group):
         for local, deploy in group.items():
@@ -181,6 +260,33 @@ def deploy(group, copy_mode, force):
 
     _deploy_group(config_group)
 
+    if submodules:
+        _deploy_submodules(config_group)
+
+
+def _deploy_submodules(group):
+    """Deploy git submodule revisions to deployed locations."""
+    for local, deploy in group.items():
+        if isinstance(deploy, dict):
+            _deploy_submodules(deploy)
+        else:
+            local_path = Path(local)
+            deploy_path = Path(deploy).expanduser().resolve()
+
+            for repo in find_git_repos(local_path):
+                relative = repo.relative_to(local_path)
+                deployed_repo = deploy_path / relative
+                if deployed_repo.exists():
+                    repo_rev = get_git_revision(repo)
+                    if repo_rev:
+                        if not is_worktree_clean(deployed_repo):
+                            logger.warning(f"Deployed {deployed_repo} has changes, skipping")
+                            continue
+                        deploy_rev = get_git_revision(deployed_repo)
+                        if deploy_rev != repo_rev:
+                            logger.info(f"Deploying {deployed_repo} to {repo_rev[:8]}")
+                            checkout_revision(deployed_repo, repo_rev)
+
 
 @main.result_callback()
 def finalize(*args, **kwargs):
@@ -197,6 +303,10 @@ def finalize(*args, **kwargs):
 
 
 def status_tree(local_path: Path, deploy_dir, deploy_file: Path, mode="hard"):
+    # Skip .git directories - they contain instance-specific git state
+    if local_path.name == ".git":
+        return True
+
     status = True
     if not deploy_file.exists():
         logger.warning(f"File {local_path} does not exists at {deploy_dir}")
@@ -276,6 +386,11 @@ def copy_tree(
 ):
     if destination_file is None:
         destination_file = file_or_dir.name
+
+    # Skip .git directories - they contain instance-specific git state
+    if destination_file == ".git":
+        return None
+
     destination_dir.mkdir(exist_ok=True, parents=True)
     destination_path = destination_dir / destination_file
 
@@ -363,10 +478,90 @@ def serialize_path(path: Path):
 
 def run_command(cmd):
     cmd = shlex.split(cmd)
-    with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
+    with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as proc:
         output, err = proc.communicate()
         code = proc.wait()
-    return code, output.decode(), err
+    return code, output.decode(), err.decode() if err else ""
+
+
+def get_git_revision(path: Path) -> str | None:
+    """Get HEAD commit hash of a git repo."""
+    code, out, _ = run_command(f"git -C {path} rev-parse HEAD")
+    return out.strip() if code == 0 else None
+
+
+def get_commit_timestamp(path: Path, commit: str = "HEAD") -> int | None:
+    """Get unix timestamp of a commit."""
+    code, out, _ = run_command(f"git -C {path} log -1 --format=%ct {commit}")
+    return int(out.strip()) if code == 0 else None
+
+
+def is_worktree_clean(path: Path) -> bool:
+    """Check if git worktree has no uncommitted changes."""
+    code, out, _ = run_command(f"git -C {path} status --porcelain")
+    return code == 0 and out.strip() == ""
+
+
+def checkout_revision(path: Path, revision: str) -> bool:
+    """Checkout a specific revision in a git repo."""
+    code, _, _ = run_command(f"git -C {path} checkout {revision}")
+    return code == 0
+
+
+def find_git_repos(path: Path) -> list[Path]:
+    """Find all git repositories under a path (by .git directory).
+
+    Excludes the path itself if it's a git repo.
+    """
+    repos = []
+    if not path.exists():
+        return repos
+    for git_dir in path.rglob(".git"):
+        if git_dir.is_dir():
+            repo_path = git_dir.parent
+            # Exclude the root path itself
+            if repo_path != path:
+                repos.append(repo_path)
+    return repos
+
+
+def sync_submodule(repo_path: Path, deploy_path: Path) -> bool:
+    """Sync a submodule between repo and deployed location.
+
+    Returns True if sync was successful or no action needed.
+    """
+    repo_rev = get_git_revision(repo_path)
+    deploy_rev = get_git_revision(deploy_path)
+
+    if repo_rev is None or deploy_rev is None:
+        logger.warning(f"Could not get revision for {repo_path} or {deploy_path}")
+        return False
+
+    if repo_rev == deploy_rev:
+        logger.debug(f"Submodule {repo_path} already in sync")
+        return True
+
+    repo_time = get_commit_timestamp(repo_path, repo_rev)
+    deploy_time = get_commit_timestamp(deploy_path, deploy_rev)
+
+    if repo_time is None or deploy_time is None:
+        logger.warning(f"Could not get timestamps for {repo_path}")
+        return False
+
+    if deploy_time > repo_time:
+        # Deployed is newer - update repo
+        if not is_worktree_clean(repo_path):
+            logger.warning(f"Repo submodule {repo_path} has uncommitted changes, skipping")
+            return False
+        logger.info(f"Updating repo submodule {repo_path} to {deploy_rev[:8]}")
+        return checkout_revision(repo_path, deploy_rev)
+    else:
+        # Repo is newer - update deployed
+        if not is_worktree_clean(deploy_path):
+            logger.warning(f"Deployed submodule {deploy_path} has uncommitted changes, skipping")
+            return False
+        logger.info(f"Updating deployed submodule {deploy_path} to {repo_rev[:8]}")
+        return checkout_revision(deploy_path, repo_rev)
 
 
 def detect_submodules(path: Path):

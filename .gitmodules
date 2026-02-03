@@ -88,3 +88,9 @@
 [submodule "tmux/.tmux/plugins/tmux-better-mouse-mode"]
 	path = tmux/.tmux/plugins/tmux-better-mouse-mode
 	url = https://git::@github.com/nhdaly/tmux-better-mouse-mode
+[submodule "zsh/.zshrc.d/antigen-bundles/zdharma-continuum/fast-syntax-highlighting"]
+	path = zsh/.zshrc.d/antigen-bundles/zdharma-continuum/fast-syntax-highlighting
+	url = https://github.com/zdharma-continuum/fast-syntax-highlighting.git
+[submodule "zsh/.zshrc.d/antigen-bundles/agkozak/zsh-z"]
+	path = zsh/.zshrc.d/antigen-bundles/agkozak/zsh-z
+	url = https://github.com/agkozak/zsh-z.git
